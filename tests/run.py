@@ -77,7 +77,9 @@ with sync_playwright() as pw:
       const good = C.encode("Teun", "", Array(C.N).fill(2));
       res.sample = good; res.sampleLen = good.length;
       res.old = C.decode(OLD).error;
-      res.newer = C.decode("C2" + good.slice(2)).error;
+      const v1 = C.decode("C1BDewSIpAzbmpC81qd5wdxDGN5J7fknWiyk19EXGUQyIErfT.Teun");
+      res.v1 = v1.error || (v1.version + ":" + v1.answers.length + ":" + v1.answers.slice(0, 100).filter(a => a !== null).length + ":" + v1.answers.slice(100).every(a => a === null));
+      res.newer = C.decode("C9" + good.slice(2)).error;
       res.cut = C.decode(good.slice(0, 30)).error;
       const flipped = good.slice(0, 10) + (good[10] === "A" ? "B" : "A") + good.slice(11);
       res.typo = C.decode(flipped).error;
@@ -93,8 +95,9 @@ with sync_playwright() as pw:
     print(json.dumps({k: v for k, v in r.items() if k not in ("bad", "badText")}, ensure_ascii=False))
     check(r["roundTrip"], "300 random codes decode back to the same name, label and answers (also inside a sentence)")
     check(r["allNull"] and r["allFour"], "all-skipped and all-strongly-agree edge cases survive")
-    check(r["sampleLen"] <= 60, f"a code for 'Teun' is short ({r['sampleLen']} characters)")
+    check(r["sampleLen"] <= 70, f"a code for 'Teun' is short ({r['sampleLen']} characters)")
     check(r["old"] == "old", "old-version code is rejected as 'old'")
+    check(r["v1"] == "1:127:100:true", f"a version-1 code still works, with the new statements unanswered ({r['v1']})")
     check(r["newer"] in ("newer", "broken"), "unknown future version is rejected")
     check(r["cut"] == "broken" and r["typo"] == "broken" and r["cutName"] == "broken", "cut-off and mistyped codes are rejected")
     check(r["alAl"] == ["Ale", "Ali"], f"Alex and Alixxa get different labels {r['alAl']}")
@@ -138,7 +141,8 @@ with sync_playwright() as pw:
         page.screenshot(path=str(OUT / f"{label}-2-question.png"))
         # Answer: mostly by clicking, skip a few
         random.seed(3)
-        for i in range(100):
+        n_q = page.evaluate("window.Compass.N")
+        for i in range(n_q):
             if i in (5, 41, 77):
                 page.click("#skip")
             else:
@@ -146,7 +150,7 @@ with sync_playwright() as pw:
         page.wait_for_timeout(300)
         check(not page.is_hidden("#result"), f"[{label}] result appears after the last statement")
         txt = page.inner_text("#answered-note")
-        check("97 of 100" in txt, f"[{label}] skipped statements are counted: {txt!r}")
+        check(f"{n_q - 3} of {n_q}" in txt, f"[{label}] skipped statements are counted: {txt!r}")
         check(page.inner_text("#group-count").startswith("20"), f"[{label}] group shows the 20 valid built-in people, ignoring the old code: {page.inner_text('#group-count')!r}")
         check(page.locator("#closest-you-list .match-row").count() == 5, f"[{label}] 'closest to you' lists 5 people")
         check(page.locator("#people .person").count() == 12 and "Show all 21" in page.inner_text("#people-more"), f"[{label}] long list is shortened to 12 with a 'Show all' button")
@@ -166,7 +170,7 @@ with sync_playwright() as pw:
         page.check("#consent")
         page.click("#send-btn")
         page.wait_for_timeout(300)
-        check(len(posts) >= 1 and posts[-1].get("entry.2") == ["add"] and posts[-1]["entry.1"][0].startswith("C1"), f"[{label}] result is posted to the form with kind=add")
+        check(len(posts) >= 1 and posts[-1].get("entry.2") == ["add"] and posts[-1]["entry.1"][0].startswith("C2"), f"[{label}] result is posted to the form with kind=add")
         check("Sent on" in page.inner_text("#send-status"), f"[{label}] confirmation shown")
 
         # Group views

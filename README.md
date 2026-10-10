@@ -61,20 +61,23 @@ Their code also exists in older commits on GitHub. If someone asks for full eras
 
 ## Changing the statements
 
-Result codes store answers **by position**. So:
+Result codes store answers **by position** in `questions.js`. So:
 
 - Rewording a statement without changing its meaning: fine.
-- Changing a statement's axis or weight: fine, scores are recalculated from the answers.
-- Adding, removing or reordering statements: old codes would be misread. Bump `CODE_VERSION` in `app.js`,
-  and adjust `CODE_RE` and the error messages, so old codes are rejected with a clear message.
+- Changing a statement's axis or weight, or which section it's shown in: fine, scores are recalculated from the answers.
+- Adding statements: only **at the end** of the list. Then add a new version to `CODE_LENGTHS` in `app.js`
+  (for example `3: 140`) and set `CODE_VERSION` to it. Older codes keep working; the new statements count as unanswered,
+  and returning visitors get a button to answer just the new ones.
+- Removing or reordering statements: don't. Old codes would be misread.
 
+The quiz shows statements grouped by section, so a statement added at the end still appears in its own section.
 After editing `questions.js`, regenerate `STATEMENTS.md` (or ask Claude to).
 
 ## How the result code works
 
-`C1` (version) + 44 characters for the 100 answers + 2 check characters + your label + `.` + your name.
+`C2` (version) + 55 characters for the 127 answers + 2 check characters + your label + `.` + your name.
 Each answer has 6 states (skipped or one of 5 points), so the answers form one big base-6 number, written
-in base 64. A typical code is about 55 characters. The check characters catch codes that were cut off or mistyped.
+in base 64. A typical code is about 65 characters. The check characters catch codes that were cut off or mistyped.
 
 ## Tests
 

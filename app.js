@@ -13,15 +13,22 @@ const $ = id => document.getElementById(id);
 // ============================================================================================
 // 1. Result codes
 // --------------------------------------------------------------------------------------------
-// Layout of a version-1 code:  C1 <44 answer chars> <2 check chars> <label, 0–3 chars> . <name>
-// Each answer has 6 possible states (unanswered + 5 points). The 100 answers are read as one
-// big base-6 number, which is then written in base 64 using URL-safe characters: 44 characters
-// instead of 100+ digits. The two check characters catch codes that were mistyped or cut off.
+// Layout of a code:  C<version> <answer chars> <2 check chars> <label, 0–3 chars> . <name>
+// Each answer has 6 possible states (unanswered + 5 points). All answers are read as one big
+// base-6 number, which is then written in base 64 using URL-safe characters: 55 characters for
+// 127 answers. The two check characters catch codes that were mistyped or cut off.
+//
+// Each version only ADDS statements at the end of the list, so an older code still reads fine:
+// the statements added after it simply count as unanswered.
+//   version 1: the first 100 statements (10 October 2026)
+//   version 2: + 27 economy statements = 127
 // ============================================================================================
-const CODE_VERSION = 1;
-const PREFIX = "C" + CODE_VERSION;
+const CODE_LENGTHS = { 1: 100, 2: 127 };
+const CODE_VERSION = 2;
+if (CODE_LENGTHS[CODE_VERSION] !== N) throw new Error("questions.js has " + N + " statements; update CODE_LENGTHS");
 const B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
-const ANS_LEN = Math.ceil(N * Math.log2(6) / 6);
+const ansLen = n => Math.ceil(n * Math.log2(6) / 6);
+const ANS_LEN = ansLen(N);
 const NAME_MAX = 24;
 
 function checksum(str) {
@@ -47,29 +54,41 @@ function encode(name, tag, answers) {
   let ans = "";
   for (let k = 0; k < ANS_LEN; k++) { ans = B64[Number(n % 64n)] + ans; n /= 64n; }
   const tail = cleanTag(tag) + "." + encodeName(cleanName(name));
-  return PREFIX + ans + checksum(PREFIX + ans + tail) + tail;
+  const prefix = "C" + CODE_VERSION;
+  return prefix + ans + checksum(prefix + ans + tail) + tail;
 }
 
-const CODE_RE = new RegExp("C1([A-Za-z0-9_-]{" + ANS_LEN + "})([A-Za-z0-9_-]{2})([A-Za-z0-9]{0,3})\\.([A-Za-z0-9_%-]+)");
-// Returns {name, tag, answers, code} or {error: "old" | "newer" | "broken" | "none"}.
+// One pattern per version, newest first, because each version has its own answer length.
+const CODE_RES = Object.keys(CODE_LENGTHS).map(Number).sort((a, b) => b - a).map(v => ({
+  v, count: CODE_LENGTHS[v],
+  re: new RegExp("C" + v + "([A-Za-z0-9_-]{" + ansLen(CODE_LENGTHS[v]) + "})([A-Za-z0-9_-]{2})([A-Za-z0-9]{0,3})\\.([A-Za-z0-9_%-]+)")
+}));
+// Returns {name, tag, answers, code, version} or {error: "old" | "newer" | "broken" | "none"}.
 function decode(input) {
   const s = String(input || "").trim();
   if (!s) return { error: "none" };
-  const m = s.match(CODE_RE);
-  if (m) {
+  let sawCandidate = false;
+  for (const { v, count, re } of CODE_RES) {
+    const m = s.match(re);
+    if (!m) continue;
+    sawCandidate = true;
     const [code, ans, chk, tag, nameEnc] = m;
-    if (checksum(PREFIX + ans + tag + "." + nameEnc) !== chk) return { error: "broken" };
+    if (checksum("C" + v + ans + tag + "." + nameEnc) !== chk) continue;
     let n = 0n;
     for (const c of ans) n = n * 64n + BigInt(B64.indexOf(c));
     const answers = [];
-    for (let i = 0; i < N; i++) { const d = Number(n % 6n); n /= 6n; answers.push(d === 0 ? null : d - 1); }
-    if (n !== 0n) return { error: "broken" };
+    for (let i = 0; i < count; i++) { const d = Number(n % 6n); n /= 6n; answers.push(d === 0 ? null : d - 1); }
+    if (n !== 0n) continue;
+    while (answers.length < N) answers.push(null);            // statements added after this version
     let name;
-    try { name = cleanName(decodeName(nameEnc)); } catch (e) { return { error: "broken" }; }
-    if (!name) return { error: "broken" };
-    return { name, tag, answers, code };
+    try { name = cleanName(decodeName(nameEnc)); } catch (e) { continue; }
+    if (!name) continue;
+    return { name, tag, answers, code, version: v };
   }
-  if (/(^|[^A-Za-z0-9_-])C([2-9]|\d\d+)[A-Za-z0-9_-]{40,}/.test(s)) return { error: "newer" };
+  if (sawCandidate) return { error: "broken" };
+  const newest = Math.max(...Object.keys(CODE_LENGTHS).map(Number));
+  const vm = s.match(/(?:^|[^A-Za-z0-9_-])C(\d+)[A-Za-z0-9_-]{40,}/);
+  if (vm && Number(vm[1]) > newest) return { error: "newer" };
   if (/eyJ[A-Za-z0-9_-]{16,}/.test(s)) return { error: "old" };
   return { error: "broken" };
 }
@@ -91,7 +110,10 @@ const blank = () => ({ name: "", tag: "", answers: Array(N).fill(null), i: 0, fi
 let st = blank();
 try {
   const s = JSON.parse(localStorage.getItem(KEY) || "null");
-  if (s && Array.isArray(s.answers) && s.answers.length === N) st = { ...blank(), ...s };
+  if (s && Array.isArray(s.answers) && s.answers.length <= N && Object.values(CODE_LENGTHS).includes(s.answers.length)) {
+    const answers = s.answers.concat(Array(N - s.answers.length).fill(null));   // new statements start unanswered
+    st = { ...blank(), ...s, answers, i: s.answers.length === N ? s.i : 0 };
+  }
 } catch (e) {}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} };
 const answeredCount = ans => ans.filter(v => v !== null).length;
@@ -150,6 +172,11 @@ function axisWords(q) {
 // ============================================================================================
 // 4. Quiz
 // ============================================================================================
+// The quiz shows statements section by section. Statements added later sit at the end of the
+// list (so old codes keep working) but are shown inside their own section. st.i is a position in ORDER.
+const ORDER = Q.map((_, i) => i).sort((a, b) => Q[a].sec - Q[b].sec || a - b);
+const POS = []; ORDER.forEach((qi, pos) => POS[qi] = pos);
+
 function show(id) { ["intro", "quiz", "result"].forEach(s => $(s).hidden = s !== id); }
 
 $("name").value = st.name;
@@ -186,27 +213,27 @@ DISPLAY.forEach((v, n) => {
 });
 
 function renderQ() {
-  const q = Q[st.i];
+  const q = Q[ORDER[st.i]];
   const inSection = Q.filter(x => x.sec === q.sec);
   $("section-tag").textContent = SECTIONS[q.sec] + " · " + (inSection.indexOf(q) + 1) + " of " + inSection.length;
   $("statement").textContent = q.t;
   $("count").textContent = (st.i + 1) + " / " + N;
   $("barfill").style.width = (answeredCount(st.answers) / N * 100) + "%";
-  [...ansBox.children].forEach(b => { const on = Number(b.dataset.v) === st.answers[st.i]; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
+  [...ansBox.children].forEach(b => { const on = Number(b.dataset.v) === st.answers[ORDER[st.i]]; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
   $("back").style.visibility = st.i === 0 ? "hidden" : "visible";
   $("finish").hidden = answeredCount(st.answers) === 0;
 }
 function advance() {
   if (st.fill) {                                            // only visiting skipped statements
-    const j = st.answers.findIndex((a, k) => k > st.i && a === null);
+    const j = ORDER.findIndex((qi, k) => k > st.i && st.answers[qi] === null);
     if (j === -1) { st.fill = false; save(); showResult(); return; }
     st.i = j;
   } else if (st.i + 1 >= N) { st.i = N; save(); showResult(); return; }
   else st.i++;
   save(); renderQ();
 }
-function pick(v) { st.answers[st.i] = v; advance(); }
-$("skip").onclick = () => { st.answers[st.i] = null; advance(); };
+function pick(v) { st.answers[ORDER[st.i]] = v; advance(); }
+$("skip").onclick = () => { st.answers[ORDER[st.i]] = null; advance(); };
 $("back").onclick = () => { if (st.i > 0) { st.i--; save(); renderQ(); } };
 $("finish").onclick = () => { save(); showResult(); };
 document.addEventListener("keydown", e => {
@@ -214,7 +241,7 @@ document.addEventListener("keydown", e => {
   if (e.key >= "1" && e.key <= "5") pick(DISPLAY[Number(e.key) - 1]);
   else if (e.key === "0" || e.key.toLowerCase() === "s") $("skip").click();
   else if (e.key === "ArrowLeft" || e.key === "Backspace") { e.preventDefault(); $("back").click(); }
-  else if (e.key === "ArrowRight" && st.answers[st.i] !== null) advance();
+  else if (e.key === "ArrowRight" && st.answers[ORDER[st.i]] !== null) advance();
 });
 if (matchMedia("(hover: none)").matches) $("keys-hint").hidden = true;
 
@@ -234,12 +261,15 @@ function showResult() {
   const done = answeredCount(st.answers);
   $("answered-note").textContent = "You answered " + done + " of " + N + " statements. Scores use only the ones you answered; −100 to +100 per axis.";
   $("unanswered-row").hidden = done === N;
+  const open = N - done, newOnes = st.answers.slice(CODE_LENGTHS[1]).every(a => a === null) && done > 0;
+  $("answer-skipped").textContent = newOnes ? "Answer the " + (N - CODE_LENGTHS[1]) + " new economy statements"
+    : "Answer the " + open + " statement" + (open === 1 ? "" : "s") + " you skipped";
   $("code").textContent = myCode();
   $("code-note").textContent = "Keep it to continue later, or to compare with friends.";
   renderSend();
   show("result"); renderAll();
 }
-$("answer-skipped").onclick = () => { st.fill = true; st.i = st.answers.findIndex(a => a === null); save(); show("quiz"); renderQ(); };
+$("answer-skipped").onclick = () => { st.fill = true; st.i = ORDER.findIndex(qi => st.answers[qi] === null); save(); show("quiz"); renderQ(); };
 $("edit").onclick = () => { st.fill = false; st.i = 0; save(); show("quiz"); renderQ(); };
 $("retake").onclick = () => {
   const keep = { name: st.name, tag: st.tag, key: st.key, sent: st.sent };
@@ -728,7 +758,7 @@ $("people-filter").addEventListener("input", () => renderPeople(lastList));
 // ============================================================================================
 // 8. Compare answers
 // ============================================================================================
-let cmpOrder = Q.map((_, i) => i), cmpPos = 0;
+let cmpOrder = ORDER.slice(), cmpPos = 0;
 function spread(list, qi) {
   const vals = list.map(p => p.ans[qi]).filter(v => v !== null);
   if (vals.length < 2) return 0;
@@ -739,19 +769,19 @@ function renderCompare(list) {
   $("compare").hidden = list.length === 0;
   if (!list.length) return;
   const current = cmpOrder[cmpPos];
-  cmpOrder = Q.map((_, i) => i);
-  if ($("divisive").checked) cmpOrder.sort((a, b) => spread(list, b) - spread(list, a) || a - b);
+  cmpOrder = ORDER.slice();
+  if ($("divisive").checked) cmpOrder.sort((a, b) => spread(list, b) - spread(list, a) || POS[a] - POS[b]);
   cmpPos = Math.max(0, cmpOrder.indexOf(current));
   const sel = $("cmp-select"); sel.textContent = "";
   const groups = {};
   cmpOrder.forEach((qi, pos) => {
     const label = $("divisive").checked ? "Most divisive first" : SECTIONS[Q[qi].sec];
     if (!groups[label]) { groups[label] = document.createElement("optgroup"); groups[label].label = label; sel.appendChild(groups[label]); }
-    const o = document.createElement("option"); o.value = pos; o.textContent = (qi + 1) + ". " + Q[qi].t; groups[label].appendChild(o);
+    const o = document.createElement("option"); o.value = pos; o.textContent = (POS[qi] + 1) + ". " + Q[qi].t; groups[label].appendChild(o);
   });
   sel.value = cmpPos;
   const qi = cmpOrder[cmpPos];
-  $("cmp-tag").textContent = SECTIONS[Q[qi].sec] + " · statement " + (qi + 1);
+  $("cmp-tag").textContent = SECTIONS[Q[qi].sec] + " · statement " + (POS[qi] + 1);
   $("cmp-statement").textContent = Q[qi].t;
   $("cmp-axis").textContent = axisWords(Q[qi]);
   $("cmp-prev").disabled = cmpPos === 0; $("cmp-next").disabled = cmpPos === N - 1;
