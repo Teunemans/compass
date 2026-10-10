@@ -3,7 +3,7 @@
 // To remove someone, delete their line. Codes from an older version are ignored with a warning.
 window.COMPASS_RESULTS = [
   "C2S7fNfh2BPVTdQsNbvAxtBePveZcJOQbQgh4HgTfknWiyk19EXGUQyIEL0T.Teun",
-  "C2SR0HkApWP-cCV1EYWuLxr1ViZ2gmXaFwKobjTswFo67tLy3EMHFmjQPIOSA.samy",
+  "C3BV2jVjd6ZhNPnOS_-EOZRA1LqxcDqu9QNLFbzs1Fmke3g29qbjTswFo67tLy3EMHFmjQP0vSA.samy",
   "C2R1xPt5Aw1abeVCaW5MWxVJTrpxXPgT1fT_zONJvJ0hD4L4uUrSp79jU1lCH.CHRISSY",
   "C1BU8CMj305X1tMI3vgSLHJ3epgKOWP7kTz378HdG4DqyvVqGS.Gregor",
   "C1AsYu4gIOlQooDdH3mwo1CN_37QQeTAL_7uXPRHdWlNfT6w.Math",
