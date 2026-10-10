@@ -324,7 +324,9 @@ $("send-btn").onclick = async () => {
   $("send-btn").disabled = true; $("send-status").className = "note"; $("send-status").textContent = "Sending…";
   try {
     await postToForm("add", code);
-    st.sent = { code, at: Date.now() }; save();
+    st.sent = { code, at: Date.now() };
+    st.sentCodes = [...new Set([...(st.sentCodes || []), code])];   // every version you sent, to recognise yourself in the group
+    save();
   } catch (e) {
     $("send-status").className = "err";
     $("send-status").innerHTML = "That didn't go through (no connection?). Try again, or send your code to " + xLink() + " on X.";
@@ -482,7 +484,10 @@ function people() {
   });
   if (st.seen && st.name && answeredCount(st.answers)) {
     const code = myCode();
-    const mine = list.find(p => p.key === code) || (st.sent && list.find(p => p.key === st.sent.code));
+    // You are in the group if it holds your current code or any code you sent from this browser
+    // (the group may still show an older version of your result). Otherwise you'd appear twice.
+    const sent = new Set([...(st.sentCodes || []), st.sent && st.sent.code].filter(Boolean));
+    const mine = list.find(p => p.key === code) || list.find(p => sent.has(p.key));
     if (mine) { mine.you = true; mine.ans = st.answers.slice(); mine.newer = mine.key !== code; }
     else list.push({ key: "local", name: st.name, tag: st.tag, ans: st.answers.slice(), you: true, local: true });
   }
