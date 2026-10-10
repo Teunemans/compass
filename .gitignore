@@ -1,0 +1,6 @@
+tests/screenshots/
+.DS_Store
+__pycache__/
+
+# Local Claude session files
+Claude outputs/

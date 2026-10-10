@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Compass</title>
+<meta name="description" content="100 statements that map your political worldview, with everyone's results on one shared compass.">
+<meta property="og:title" content="Compass">
+<meta property="og:description" content="100 statements that map your political worldview, with everyone's results on one shared compass.">
+<meta name="theme-color" content="#f6f6f4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='none' stroke='%2315171c' stroke-width='2.5'/%3E%3Cpath d='M16 5v22M5 16h22' stroke='%2315171c' stroke-width='1.5'/%3E%3Ccircle cx='21' cy='11' r='3.5' fill='%232a52be'/%3E%3C/svg%3E">
+<link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/ibm-plex-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+<script>
+  // Apply the saved theme before the page draws, so dark-mode users don't see a white flash.
+  try { if (localStorage.getItem("compass-theme") === "dark") document.documentElement.dataset.theme = "dark"; } catch (e) {}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Compass</h1>
+      <p class="muted">100 statements, from first principles to foreign policy. Where do you stand, and who stands closest to you?</p>
+    </div>
+    <button class="small" id="theme" type="button" aria-label="Switch to dark mode">Dark</button>
+  </header>
+
+  <section class="card" id="intro">
+    <ul class="facts muted">
+      <li>About 15 minutes. You can skip any statement, and stop early.</li>
+      <li>Your answers stay in this browser. Nothing is sent unless you choose to add yourself to the group.</li>
+    </ul>
+    <div class="two">
+      <div class="field">
+        <label for="name">Name or nickname</label>
+        <input type="text" id="name" maxlength="24" autocomplete="nickname" placeholder="e.g. Sanne">
+      </div>
+      <div class="field">
+        <label for="tag">Label <span style="font-weight:400">(optional)</span></label>
+        <input type="text" id="tag" maxlength="3" autocomplete="off" placeholder="e.g. SV" aria-describedby="tag-help">
+      </div>
+    </div>
+    <p class="note" id="tag-help">Your label (1–3 letters or digits) goes on your ball on the compass. Leave it empty and one is made from your name.</p>
+    <div class="row">
+      <button class="primary" id="start" type="button" disabled>Start</button>
+      <span class="note" id="resume-note" hidden></span>
+    </div>
+    <details id="resume-code">
+      <summary>Already took the test? Continue with your result code</summary>
+      <div class="row">
+        <input type="text" id="old-code" placeholder="Paste your result code" style="flex:1;min-width:0" autocomplete="off">
+        <button id="use-code" type="button">Continue</button>
+      </div>
+      <p class="note" id="old-code-note" style="margin-top:6px" aria-live="polite"></p>
+    </details>
+  </section>
+
+  <section class="card" id="quiz" hidden>
+    <div class="progress"><span id="count">1 / 100</span><div class="bar"><span id="barfill" style="width:0"></span></div></div>
+    <p class="section-tag" id="section-tag"></p>
+    <p class="statement" id="statement" aria-live="polite"></p>
+    <div class="answers" id="answers" role="group" aria-label="Your answer"></div>
+    <div class="nav">
+      <div class="row">
+        <button class="link" id="back" type="button">Back</button>
+        <button class="link" id="skip" type="button">Skip</button>
+      </div>
+      <div class="row">
+        <span class="note" id="keys-hint">Keys 1–5 to answer, 0 to skip</span>
+        <button class="link" id="finish" type="button">See my result now</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="result" hidden>
+    <div class="row spread"><h2>Your position</h2><button class="small" id="share-img" type="button">Save as image</button></div>
+    <div class="scores">
+      <div class="score"><b id="sx">–</b><span id="sx-l">Economic</span></div>
+      <div class="score"><b id="sy">–</b><span id="sy-l">Social</span></div>
+      <div class="score"><b id="sh">–</b><span id="sh-l">Foreign policy</span></div>
+    </div>
+    <p class="note" id="answered-note"></p>
+    <div class="row" id="unanswered-row" hidden>
+      <button class="small" id="answer-skipped" type="button">Answer the ones you skipped</button>
+    </div>
+
+    <div class="sub" id="closest-you" hidden>
+      <h3>Closest to you</h3>
+      <div class="match" id="closest-you-list"></div>
+      <p class="note">Agreement over all statements you both answered: 100% means identical answers.</p>
+    </div>
+
+    <div class="sub" id="send">
+      <h3>Add me to the group compass</h3>
+      <div id="send-form">
+        <label class="check"><input type="checkbox" id="consent">
+          <span>I'm 16 or older, and I agree that Teun stores the name I entered and my answers, and shows them publicly on the group compass on this site. I understand my answers reveal my political views, and that I can have my result removed at any time. <a href="privacy.html" target="_blank" rel="noopener">Privacy note</a></span>
+        </label>
+        <p class="note" style="margin:8px 0 0 28px">Rather not be recognisable? Use a nickname.</p>
+        <div class="row" style="margin-top:12px">
+          <button class="primary" id="send-btn" type="button" disabled>Add me</button>
+          <span id="send-status" class="note" aria-live="polite"></span>
+        </div>
+      </div>
+      <p class="note" id="send-off" hidden></p>
+    </div>
+
+    <div class="sub">
+      <h3>Your result code</h3>
+      <p class="code-box" id="code"></p>
+      <div class="row">
+        <button class="small" id="copy" type="button">Copy code</button>
+        <span class="note" id="code-note" aria-live="polite">Keep it to continue later, or to compare with friends.</span>
+      </div>
+    </div>
+    <div class="row"><button class="link" id="edit" type="button">Change my answers</button><button class="link" id="retake" type="button">Start over</button></div>
+  </section>
+
+  <section class="card" id="group">
+    <div class="row spread">
+      <h2>The group</h2>
+      <div class="row" style="gap:12px">
+        <span class="note" id="group-count"></span>
+        <div class="seg" role="group" aria-label="Compass view">
+          <button id="view-2d" class="on" type="button">2D</button>
+          <button id="view-3d" type="button">3D</button>
+        </div>
+      </div>
+    </div>
+    <svg class="chart" id="plot" viewBox="0 0 420 420" role="img" aria-label="Political compass with everyone's position"></svg>
+    <svg class="chart" id="plot3d" viewBox="0 0 420 420" role="img" tabindex="0" aria-label="Three-dimensional compass: economic, social and hawk–dove. Drag or use the arrow keys to rotate." hidden></svg>
+    <p class="note" id="rotate-hint" style="text-align:center" hidden>Drag to rotate · the third axis runs from dove to hawk</p>
+    <p class="note" id="group-note"></p>
+    <div class="sub" id="hawk" hidden>
+      <h3>Dove or hawk</h3>
+      <svg class="chart" id="hawk-plot" viewBox="0 0 420 100" role="img" aria-label="Everyone placed from dove to hawk on foreign policy"></svg>
+    </div>
+    <div class="sub" id="focus" hidden>
+      <div class="row spread"><h3 id="focus-title"></h3><button class="link" id="focus-clear" type="button">Close</button></div>
+      <p class="note" id="focus-scores"></p>
+      <div class="match" id="focus-list"></div>
+    </div>
+    <div class="sub" id="people-box" hidden>
+      <div class="row spread">
+        <h3>Everyone</h3>
+        <input type="text" id="people-filter" placeholder="Find a name" style="width:auto;flex:0 1 200px;padding:6px 10px;font-size:13px" hidden>
+      </div>
+      <div class="people" id="people"></div>
+      <button class="link" id="people-more" type="button" hidden></button>
+    </div>
+  </section>
+
+  <section class="card" id="compare" hidden>
+    <div class="row spread">
+      <h2>Compare answers</h2>
+      <label class="toggle"><input type="checkbox" id="divisive"> Most divisive first</label>
+    </div>
+    <div class="cmp-top">
+      <button id="cmp-prev" type="button" aria-label="Previous statement">←</button>
+      <select id="cmp-select" aria-label="Statement"></select>
+      <button id="cmp-next" type="button" aria-label="Next statement">→</button>
+    </div>
+    <p class="section-tag" id="cmp-tag" style="text-align:center"></p>
+    <p class="cmp-statement" id="cmp-statement"></p>
+    <div class="cols" id="cols"></div>
+    <p class="split" id="cmp-split"></p>
+    <p class="note" id="cmp-axis" style="text-align:center"></p>
+  </section>
+
+  <section class="card" id="owner" hidden>
+    <h2>Manage the group</h2>
+    <p class="note">For Teun. Paste result codes, one per line (a whole message with a code in it works too). The compass on this page previews the list straight away, only in this browser. When it looks right, copy it as results.js and commit that file.</p>
+    <textarea id="owner-codes" rows="8" spellcheck="false"></textarea>
+    <div class="row">
+      <button class="primary small" id="owner-copy" type="button">Copy as results.js</button>
+      <button class="small" id="owner-reset" type="button">Back to the published list</button>
+      <span class="note" id="owner-status" aria-live="polite"></span>
+    </div>
+    <div class="people" id="owner-check"></div>
+  </section>
+
+  <section class="card" id="remove" hidden>
+    <h2>Remove my result</h2>
+    <p id="remove-text"></p>
+    <div class="row" id="remove-actions" hidden>
+      <button class="primary" id="remove-btn" type="button">Yes, remove my result</button>
+      <span class="note" id="remove-status" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <footer>
+    <a href="privacy.html">Privacy</a>
+    <a href="#remove" id="remove-link">Remove my result</a>
+    <span>No cookies, no tracking</span>
+  </footer>
+</div>
+
+<script src="config.js"></script>
+<script src="questions.js"></script>
+<script src="results.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
