@@ -77,6 +77,8 @@ with sync_playwright() as pw:
       const good = C.encode("Teun", "", Array(C.N).fill(2));
       res.sample = good; res.sampleLen = good.length;
       res.old = C.decode(OLD).error;
+      const v2 = C.decode("C2S7fNfh2BPVTdQsNbvAxtBePveZcJOQbQgh4HgTfknWiyk19EXGUQyIEL0T.Teun");
+      res.v2 = v2.error || (v2.version + ":" + v2.answers.slice(0, 127).filter(a => a !== null).length + ":" + v2.answers.slice(127).every(a => a === null));
       const v1 = C.decode("C1BDewSIpAzbmpC81qd5wdxDGN5J7fknWiyk19EXGUQyIErfT.Teun");
       res.v1 = v1.error || (v1.version + ":" + v1.answers.length + ":" + v1.answers.slice(0, 100).filter(a => a !== null).length + ":" + v1.answers.slice(100).every(a => a === null));
       res.newer = C.decode("C9" + good.slice(2)).error;
@@ -95,9 +97,10 @@ with sync_playwright() as pw:
     print(json.dumps({k: v for k, v in r.items() if k not in ("bad", "badText")}, ensure_ascii=False))
     check(r["roundTrip"], "300 random codes decode back to the same name, label and answers (also inside a sentence)")
     check(r["allNull"] and r["allFour"], "all-skipped and all-strongly-agree edge cases survive")
-    check(r["sampleLen"] <= 70, f"a code for 'Teun' is short ({r['sampleLen']} characters)")
+    check(r["sampleLen"] <= 80, f"a code for 'Teun' is short ({r['sampleLen']} characters)")
     check(r["old"] == "old", "old-version code is rejected as 'old'")
-    check(r["v1"] == "1:127:100:true", f"a version-1 code still works, with the new statements unanswered ({r['v1']})")
+    check(r["v2"] == "2:127:true", f"a version-2 code still works ({r['v2']})")
+    check(r["v1"] == "1:158:100:true", f"a version-1 code still works, with the new statements unanswered ({r['v1']})")
     check(r["newer"] in ("newer", "broken"), "unknown future version is rejected")
     check(r["cut"] == "broken" and r["typo"] == "broken" and r["cutName"] == "broken", "cut-off and mistyped codes are rejected")
     check(r["alAl"] == ["Ale", "Ali"], f"Alex and Alixxa get different labels {r['alAl']}")
@@ -170,7 +173,7 @@ with sync_playwright() as pw:
         page.check("#consent")
         page.click("#send-btn")
         page.wait_for_timeout(300)
-        check(len(posts) >= 1 and posts[-1].get("entry.2") == ["add"] and posts[-1]["entry.1"][0].startswith("C2"), f"[{label}] result is posted to the form with kind=add")
+        check(len(posts) >= 1 and posts[-1].get("entry.2") == ["add"] and posts[-1]["entry.1"][0].startswith("C3"), f"[{label}] result is posted to the form with kind=add")
         check("Sent on" in page.inner_text("#send-status"), f"[{label}] confirmation shown")
 
         # Group views

@@ -17,7 +17,7 @@
 window.COMPASS_SECTIONS = [
   "Foundations", "Economic values", "Economy", "State, law and liberty", "Nation, culture and migration",
   "Morality, bodies and family", "Environment, technology and science",
-  "Foreign policy and security", "Europe", "Democracy and institutions"
+  "Foreign policy and security", "Israel and Palestine", "Europe", "Democracy and institutions"
 ];
 
 window.COMPASS_QUESTIONS = [
@@ -110,9 +110,9 @@ window.COMPASS_QUESTIONS = [
   {id:"p02", sec:7, h:-1,   t:"Ukraine should accept losing some territory in exchange for a lasting peace."},
   {id:"p03", sec:7, h: 1,   t:"European soldiers should be stationed in Ukraine to help guarantee a peace deal."},
   {id:"p04", sec:7, h:-1,   t:"NATO's expansion eastwards helped provoke Russia's invasion of Ukraine."},
-  {id:"p05", sec:7, h: 1, s: 0.5, t:"Israel's war in Gaza after the attack of 7 October 2023 was justified."},
-  {id:"p06", sec:7, s:-0.5, t:"European countries should recognise a Palestinian state."},
-  {id:"p07", sec:7, h:-1, s:-0.5, t:"European countries should stop selling weapons to Israel."},
+  {id:"p05", sec:8, h: 1, s: 0.5, t:"Israel's war in Gaza after the attack of 7 October 2023 was justified."},
+  {id:"p06", sec:8, s:-0.5, t:"European countries should recognise a Palestinian state."},
+  {id:"p07", sec:8, h:-1, s:-0.5, t:"European countries should stop selling weapons to Israel."},
   {id:"p08", sec:7, h:-1,   t:"Taiwan's future is a matter for China and Taiwan, not for Europe."},
   {id:"p09", sec:7, h: 0.5, t:"Europe should stay closely allied with the United States, whoever is president."},
   {id:"p10", sec:7, h: 1,   t:"My country should spend at least 3.5% of its GDP on defence, even if that means less money for other things."},
@@ -124,20 +124,20 @@ window.COMPASS_QUESTIONS = [
   {id:"p16", sec:7, h:-1,   t:"The 2003 invasion of Iraq was a mistake."},
 
   // ---------- Europe ----------
-  {id:"u01", sec:8, s: 0.5, t:"Too many decisions are taken in Brussels; more power should return to national governments."},
-  {id:"u02", sec:8, e:-1,   t:"Richer EU countries should permanently transfer money to poorer ones."},
-  {id:"u03", sec:8, s:-0.5, t:"The EU should build a joint European army."},
-  {id:"u04", sec:8, s:-0.5, t:"The EU should admit new members such as Ukraine and the Western Balkan countries in the coming years."},
-  {id:"u05", sec:8, s: 0.5, t:"Countries should be able to opt out of EU rules they disagree with, even if that means less influence."},
-  {id:"u06", sec:8, s:-0.5, t:"National vetoes in EU foreign policy should be replaced by majority voting."},
-  {id:"u07", sec:8, s: 1,   t:"Brexit was the right decision for the United Kingdom."},
+  {id:"u01", sec:9, s: 0.5, t:"Too many decisions are taken in Brussels; more power should return to national governments."},
+  {id:"u02", sec:9, e:-1,   t:"Richer EU countries should permanently transfer money to poorer ones."},
+  {id:"u03", sec:9, s:-0.5, t:"The EU should build a joint European army."},
+  {id:"u04", sec:9, s:-0.5, t:"The EU should admit new members such as Ukraine and the Western Balkan countries in the coming years."},
+  {id:"u05", sec:9, s: 0.5, t:"Countries should be able to opt out of EU rules they disagree with, even if that means less influence."},
+  {id:"u06", sec:9, s:-0.5, t:"National vetoes in EU foreign policy should be replaced by majority voting."},
+  {id:"u07", sec:9, s: 1,   t:"Brexit was the right decision for the United Kingdom."},
 
   // ---------- Democracy and institutions ----------
-  {id:"d01", sec:9,         t:"Important national decisions should be settled by binding referendums."},
-  {id:"d02", sec:9, s: 1,   t:"My country should leave the European Convention on Human Rights if that is needed to control migration."},
-  {id:"d03", sec:9,         t:"Some decisions, such as setting interest rates, are better left to independent experts than to elected politicians."},
-  {id:"d04", sec:9, s: 1,   t:"Monarchies are worth keeping, in countries that have one."},
-  {id:"d05", sec:9, s:-1,   t:"The voting age should be lowered to 16."},
+  {id:"d01", sec:10,         t:"Important national decisions should be settled by binding referendums."},
+  {id:"d02", sec:10, s: 1,   t:"My country should leave the European Convention on Human Rights if that is needed to control migration."},
+  {id:"d03", sec:10,         t:"Some decisions, such as setting interest rates, are better left to independent experts than to elected politicians."},
+  {id:"d04", sec:10, s: 1,   t:"Monarchies are worth keeping, in countries that have one."},
+  {id:"d05", sec:10, s:-1,   t:"The voting age should be lowered to 16."},
   // ---------- Added October 2026: more economy (positions 101-127). Always append new statements here. ----------
   // Economic values
   {id:"v01", sec:1, e: 1,   t:"Private property is a basic right that the state should rarely override."},
@@ -167,5 +167,39 @@ window.COMPASS_QUESTIONS = [
   {id:"e30", sec:2, e: 1,   t:"People should mostly save for their own pension, rather than rely on a state pension paid by today's workers."},
   {id:"e31", sec:2, e: 1,   t:"Strikes in essential services, such as hospitals and trains, should only be allowed if a minimum service keeps running."},
   {id:"e32", sec:2, e:-1,   t:"Platforms such as Uber and Deliveroo should have to employ their drivers and couriers."},
-  {id:"e33", sec:2, e: 0.5, t:"Shops should be free to open on Sundays."}
+  {id:"e33", sec:2, e: 0.5, t:"Shops should be free to open on Sundays."},
+  // ---------- Added October 2026: Israel and Palestine, and more foreign policy (positions 128-158) ----------
+  // Israel and Palestine
+  {id:"i01", sec:8, s: 0.5, t:"Israel has the right to exist as a Jewish state."},
+  {id:"i02", sec:8, s:-0.5, t:"Palestinians have the right to their own independent state."},
+  {id:"i03", sec:8, s:-0.5, t:"Israel's occupation of the West Bank is the biggest obstacle to peace."},
+  {id:"i04", sec:8, s: 0.5, t:"Hamas's attack of 7 October 2023 is the main reason for the war in Gaza."},
+  {id:"i05", sec:8, s:-0.5, t:"What Israel has done in Gaza amounts to genocide."},
+  {id:"i06", sec:8, s:-0.5, t:"Israeli settlements in the West Bank should be dismantled."},
+  {id:"i07", sec:8, s:-0.5, t:"European countries should arrest Benjamin Netanyahu if he visits, as the International Criminal Court's warrant requires."},
+  {id:"i08", sec:8, s:-0.5, t:"The EU should suspend its trade agreement with Israel because of the war in Gaza."},
+  {id:"i09", sec:8, s: 0.5, t:"Pro-Palestinian protests in Europe have too often crossed the line into antisemitism."},
+  {id:"i10", sec:8, h: 1, s: 0.5, t:"Israel is right to respond with overwhelming force when it is attacked."},
+  {id:"i11", sec:8, s: 0.5, t:"Jerusalem should be the undivided capital of Israel."},
+  {id:"i12", sec:8, s:-0.5, t:"Europe should keep funding UNRWA, the UN agency for Palestinian refugees."},
+  // More foreign policy and security
+  {id:"p17", sec:7, h: 1,   t:"My country should send troops to defend any NATO ally attacked by Russia, even a small Baltic state."},
+  {id:"p18", sec:7, h:-1,   t:"Sanctions on Russia should be lifted once there is a ceasefire in Ukraine."},
+  {id:"p19", sec:7, h: 1,   t:"Ukraine should be allowed to strike military targets deep inside Russia with Western weapons."},
+  {id:"p20", sec:7, h: 1,   t:"Ukraine should become a member of NATO."},
+  {id:"p21", sec:7, h:-1,   t:"European leaders should negotiate directly with Putin to end the war."},
+  {id:"p22", sec:7, h: 1,   t:"China is more a threat to Europe than a partner."},
+  {id:"p23", sec:7, h: 0.5, t:"Chinese companies should be kept out of critical infrastructure such as telecom networks and ports."},
+  {id:"p24", sec:7, h: 1,   t:"Iran must be stopped from getting nuclear weapons, by military force if necessary."},
+  {id:"p25", sec:7, h: 1,   t:"The strikes by the US and Israel on Iran's nuclear sites in June 2025 were justified."},
+  {id:"p26", sec:7, e:-0.5, t:"Rich countries should spend at least 0.7% of their national income on development aid."},
+  {id:"p27", sec:7, h:-1,   t:"Western countries should not interfere in other countries' internal affairs, even to protect human rights."},
+  {id:"p28", sec:7, h: 1,   t:"The West should be willing to use military force to stop genocide or mass atrocities abroad."},
+  {id:"p29", sec:7, h:-1,   t:"The 2011 military intervention in Libya was a mistake."},
+  {id:"p30", sec:7,         t:"The UN Security Council is so deadlocked that it has become irrelevant."},
+  {id:"p31", sec:7,         t:"Europe should buy weapons from European companies rather than American ones, even if they cost more."},
+  {id:"p32", sec:7, h:-1,   t:"Countries should only sell weapons to democracies."},
+  {id:"p33", sec:7, h:-1,   t:"Withdrawing from Afghanistan in 2021 was the right decision, even though the Taliban took over."},
+  {id:"p34", sec:7, h:-1,   t:"Europe should accept that Russia has a sphere of influence in its neighbourhood."},
+  {id:"p35", sec:7, h:-1,   t:"Nuclear weapons should eventually be abolished worldwide."}
 ];

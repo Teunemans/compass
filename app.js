@@ -15,16 +15,17 @@ const $ = id => document.getElementById(id);
 // --------------------------------------------------------------------------------------------
 // Layout of a code:  C<version> <answer chars> <2 check chars> <label, 0–3 chars> . <name>
 // Each answer has 6 possible states (unanswered + 5 points). All answers are read as one big
-// base-6 number, which is then written in base 64 using URL-safe characters: 55 characters for
-// 127 answers. The two check characters catch codes that were mistyped or cut off.
+// base-6 number, which is then written in base 64 using URL-safe characters: 69 characters for
+// 158 answers. The two check characters catch codes that were mistyped or cut off.
 //
 // Each version only ADDS statements at the end of the list, so an older code still reads fine:
 // the statements added after it simply count as unanswered.
 //   version 1: the first 100 statements (10 October 2026)
 //   version 2: + 27 economy statements = 127
+//   version 3: + 12 Israel/Palestine and 19 foreign policy statements = 158
 // ============================================================================================
-const CODE_LENGTHS = { 1: 100, 2: 127 };
-const CODE_VERSION = 2;
+const CODE_LENGTHS = { 1: 100, 2: 127, 3: 158 };
+const CODE_VERSION = 3;
 if (CODE_LENGTHS[CODE_VERSION] !== N) throw new Error("questions.js has " + N + " statements; update CODE_LENGTHS");
 const B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 const ansLen = n => Math.ceil(n * Math.log2(6) / 6);
@@ -261,8 +262,12 @@ function showResult() {
   const done = answeredCount(st.answers);
   $("answered-note").textContent = "You answered " + done + " of " + N + " statements. Scores use only the ones you answered; −100 to +100 per axis.";
   $("unanswered-row").hidden = done === N;
-  const open = N - done, newOnes = st.answers.slice(CODE_LENGTHS[1]).every(a => a === null) && done > 0;
-  $("answer-skipped").textContent = newOnes ? "Answer the " + (N - CODE_LENGTHS[1]) + " new economy statements"
+  // If everything after an earlier version's last statement is empty, those are statements added
+  // since this person last took the quiz: call them "new" rather than "skipped".
+  const open = N - done;
+  let last = -1; st.answers.forEach((a, i) => { if (a !== null) last = i; });
+  const since = last < 0 ? undefined : Object.values(CODE_LENGTHS).filter(L => L > last && L < N).sort((a, b) => a - b)[0];
+  $("answer-skipped").textContent = since ? "Answer the " + (N - since) + " new statements"
     : "Answer the " + open + " statement" + (open === 1 ? "" : "s") + " you skipped";
   $("code").textContent = myCode();
   $("code-note").textContent = "Keep it to continue later, or to compare with friends.";

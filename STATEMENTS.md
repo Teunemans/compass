@@ -1,4 +1,4 @@
-# Compass statements (v2, 127)
+# Compass statements (v3, 158)
 
 The tag says where *agreeing* pushes you. ½ = counts half. "Compare only" = no axis, used for comparing people and "closest to you".
 
@@ -146,37 +146,73 @@ The source of truth is `questions.js`; this file is generated from it for readin
 | 101 | Ukraine should accept losing some territory in exchange for a lasting peace. | Dove |
 | 102 | European soldiers should be stationed in Ukraine to help guarantee a peace deal. | Hawk |
 | 103 | NATO's expansion eastwards helped provoke Russia's invasion of Ukraine. | Dove |
-| 104 | Israel's war in Gaza after the attack of 7 October 2023 was justified. | Conservative ½, Hawk |
-| 105 | European countries should recognise a Palestinian state. | Progressive ½ |
-| 106 | European countries should stop selling weapons to Israel. | Progressive ½, Dove |
-| 107 | Taiwan's future is a matter for China and Taiwan, not for Europe. | Dove |
-| 108 | Europe should stay closely allied with the United States, whoever is president. | Hawk ½ |
-| 109 | My country should spend at least 3.5% of its GDP on defence, even if that means less money for other things. | Hawk |
-| 110 | Europe needs its own nuclear deterrent, independent of the United States. | Hawk |
-| 111 | Diplomacy and trade do more to keep the peace than military strength. | Dove |
-| 112 | My country should only send soldiers to fight abroad if it or an ally has been attacked. | Dove |
-| 113 | The 1991 Gulf War to drive Iraq out of Kuwait was justified. | Hawk |
-| 114 | NATO was right to bomb Serbia over Kosovo in 1999. | Hawk |
-| 115 | The 2003 invasion of Iraq was a mistake. | Dove |
+| 104 | Taiwan's future is a matter for China and Taiwan, not for Europe. | Dove |
+| 105 | Europe should stay closely allied with the United States, whoever is president. | Hawk ½ |
+| 106 | My country should spend at least 3.5% of its GDP on defence, even if that means less money for other things. | Hawk |
+| 107 | Europe needs its own nuclear deterrent, independent of the United States. | Hawk |
+| 108 | Diplomacy and trade do more to keep the peace than military strength. | Dove |
+| 109 | My country should only send soldiers to fight abroad if it or an ally has been attacked. | Dove |
+| 110 | The 1991 Gulf War to drive Iraq out of Kuwait was justified. | Hawk |
+| 111 | NATO was right to bomb Serbia over Kosovo in 1999. | Hawk |
+| 112 | The 2003 invasion of Iraq was a mistake. | Dove |
+| 113 | My country should send troops to defend any NATO ally attacked by Russia, even a small Baltic state. | Hawk |
+| 114 | Sanctions on Russia should be lifted once there is a ceasefire in Ukraine. | Dove |
+| 115 | Ukraine should be allowed to strike military targets deep inside Russia with Western weapons. | Hawk |
+| 116 | Ukraine should become a member of NATO. | Hawk |
+| 117 | European leaders should negotiate directly with Putin to end the war. | Dove |
+| 118 | China is more a threat to Europe than a partner. | Hawk |
+| 119 | Chinese companies should be kept out of critical infrastructure such as telecom networks and ports. | Hawk ½ |
+| 120 | Iran must be stopped from getting nuclear weapons, by military force if necessary. | Hawk |
+| 121 | The strikes by the US and Israel on Iran's nuclear sites in June 2025 were justified. | Hawk |
+| 122 | Rich countries should spend at least 0.7% of their national income on development aid. | Left ½ |
+| 123 | Western countries should not interfere in other countries' internal affairs, even to protect human rights. | Dove |
+| 124 | The West should be willing to use military force to stop genocide or mass atrocities abroad. | Hawk |
+| 125 | The 2011 military intervention in Libya was a mistake. | Dove |
+| 126 | The UN Security Council is so deadlocked that it has become irrelevant. | compare only |
+| 127 | Europe should buy weapons from European companies rather than American ones, even if they cost more. | compare only |
+| 128 | Countries should only sell weapons to democracies. | Dove |
+| 129 | Withdrawing from Afghanistan in 2021 was the right decision, even though the Taliban took over. | Dove |
+| 130 | Europe should accept that Russia has a sphere of influence in its neighbourhood. | Dove |
+| 131 | Nuclear weapons should eventually be abolished worldwide. | Dove |
+
+## Israel and Palestine
+
+| # | Statement | Agreeing = |
+|---|---|---|
+| 132 | Israel's war in Gaza after the attack of 7 October 2023 was justified. | Conservative ½, Hawk |
+| 133 | European countries should recognise a Palestinian state. | Progressive ½ |
+| 134 | European countries should stop selling weapons to Israel. | Progressive ½, Dove |
+| 135 | Israel has the right to exist as a Jewish state. | Conservative ½ |
+| 136 | Palestinians have the right to their own independent state. | Progressive ½ |
+| 137 | Israel's occupation of the West Bank is the biggest obstacle to peace. | Progressive ½ |
+| 138 | Hamas's attack of 7 October 2023 is the main reason for the war in Gaza. | Conservative ½ |
+| 139 | What Israel has done in Gaza amounts to genocide. | Progressive ½ |
+| 140 | Israeli settlements in the West Bank should be dismantled. | Progressive ½ |
+| 141 | European countries should arrest Benjamin Netanyahu if he visits, as the International Criminal Court's warrant requires. | Progressive ½ |
+| 142 | The EU should suspend its trade agreement with Israel because of the war in Gaza. | Progressive ½ |
+| 143 | Pro-Palestinian protests in Europe have too often crossed the line into antisemitism. | Conservative ½ |
+| 144 | Israel is right to respond with overwhelming force when it is attacked. | Conservative ½, Hawk |
+| 145 | Jerusalem should be the undivided capital of Israel. | Conservative ½ |
+| 146 | Europe should keep funding UNRWA, the UN agency for Palestinian refugees. | Progressive ½ |
 
 ## Europe
 
 | # | Statement | Agreeing = |
 |---|---|---|
-| 116 | Too many decisions are taken in Brussels; more power should return to national governments. | Conservative ½ |
-| 117 | Richer EU countries should permanently transfer money to poorer ones. | Left |
-| 118 | The EU should build a joint European army. | Progressive ½ |
-| 119 | The EU should admit new members such as Ukraine and the Western Balkan countries in the coming years. | Progressive ½ |
-| 120 | Countries should be able to opt out of EU rules they disagree with, even if that means less influence. | Conservative ½ |
-| 121 | National vetoes in EU foreign policy should be replaced by majority voting. | Progressive ½ |
-| 122 | Brexit was the right decision for the United Kingdom. | Conservative |
+| 147 | Too many decisions are taken in Brussels; more power should return to national governments. | Conservative ½ |
+| 148 | Richer EU countries should permanently transfer money to poorer ones. | Left |
+| 149 | The EU should build a joint European army. | Progressive ½ |
+| 150 | The EU should admit new members such as Ukraine and the Western Balkan countries in the coming years. | Progressive ½ |
+| 151 | Countries should be able to opt out of EU rules they disagree with, even if that means less influence. | Conservative ½ |
+| 152 | National vetoes in EU foreign policy should be replaced by majority voting. | Progressive ½ |
+| 153 | Brexit was the right decision for the United Kingdom. | Conservative |
 
 ## Democracy and institutions
 
 | # | Statement | Agreeing = |
 |---|---|---|
-| 123 | Important national decisions should be settled by binding referendums. | compare only |
-| 124 | My country should leave the European Convention on Human Rights if that is needed to control migration. | Conservative |
-| 125 | Some decisions, such as setting interest rates, are better left to independent experts than to elected politicians. | compare only |
-| 126 | Monarchies are worth keeping, in countries that have one. | Conservative |
-| 127 | The voting age should be lowered to 16. | Progressive |
+| 154 | Important national decisions should be settled by binding referendums. | compare only |
+| 155 | My country should leave the European Convention on Human Rights if that is needed to control migration. | Conservative |
+| 156 | Some decisions, such as setting interest rates, are better left to independent experts than to elected politicians. | compare only |
+| 157 | Monarchies are worth keeping, in countries that have one. | Conservative |
+| 158 | The voting age should be lowered to 16. | Progressive |

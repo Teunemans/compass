@@ -75,9 +75,9 @@ After editing `questions.js`, regenerate `STATEMENTS.md` (or ask Claude to).
 
 ## How the result code works
 
-`C2` (version) + 55 characters for the 127 answers + 2 check characters + your label + `.` + your name.
+`C3` (version) + 69 characters for the 158 answers + 2 check characters + your label + `.` + your name.
 Each answer has 6 states (skipped or one of 5 points), so the answers form one big base-6 number, written
-in base 64. A typical code is about 65 characters. The check characters catch codes that were cut off or mistyped.
+in base 64. A typical code is about 80 characters. The check characters catch codes that were cut off or mistyped.
 
 ## Tests
 
