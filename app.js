@@ -848,6 +848,26 @@ function renderAll() {
 
 if (st.seen && st.name) showResult(); else { show("intro"); renderAll(); }
 startSpin();
+
+// Browsers may keep an old copy of results.js for up to 10 minutes (GitHub Pages' cache time).
+// So fetch it again, asking the server whether it changed, and redraw when new people were added.
+// While the page stays open, repeat that every minute so new arrivals appear without reloading.
+async function refreshGroup() {
+  if (ownerList !== null) return;                              // the owner preview replaces the list
+  try {
+    const r = await fetch("results.js", { cache: "no-cache" });
+    if (!r.ok) return;
+    const text = await r.text(), start = text.indexOf("COMPASS_RESULTS");
+    if (start < 0) return;
+    const codes = [...text.slice(start).matchAll(/"([^"\n]+)"/g)].map(m => m[1]);
+    if (JSON.stringify(codes) === JSON.stringify(window.COMPASS_RESULTS || [])) return;
+    window.COMPASS_RESULTS = codes;
+    if (OWNER) $("owner-codes").value = codes.join("\n");
+    renderAll();
+  } catch (e) {}
+}
+refreshGroup();
+setInterval(() => { if (document.visibilityState === "visible") refreshGroup(); }, 60000);
 if (location.hash === "#remove") openRemove();
 
 // Small hook for the automated tests (tests/run.py); harmless for visitors.

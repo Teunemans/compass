@@ -223,6 +223,8 @@ with sync_playwright() as pw:
 
     # ---------- 4. empty group, sending switched off ----------
     ctx = browser.new_context(viewport={"width": 390, "height": 844}, is_mobile=True, has_touch=True)
+    ctx.route("**/config.js", lambda route: route.fulfill(body='window.COMPASS_CONFIG = {owner:"Teun", ownerX:"Teunemansvb", form:{action:""}};', content_type="text/javascript"))
+    ctx.route("**/results.js", lambda route: route.fulfill(body="window.COMPASS_RESULTS = [];", content_type="text/javascript"))
     page = ctx.new_page()
     page.goto(URL)
     page.fill("#name", "Sanne")
