@@ -807,7 +807,7 @@ function renderCompare(list) {
     col.appendChild(balls); cols.appendChild(col);
   });
   list.forEach(p => { const v = p.ans[qi]; if (v === null) missing++; else if (v > 2) agree++; else if (v < 2) disagree++; else neutral++; });
-  $("cmp-split").textContent = agree + " agree · " + neutral + " neutral · " + disagree + " disagree" + (missing ? " · " + missing + " skipped" : "");
+  $("cmp-split").textContent = agree + " agree · " + neutral + " neutral · " + disagree + " disagree" + (missing ? " · " + missing + " not answered (yet)" : "");
 }
 $("cmp-prev").onclick = () => { if (cmpPos > 0) { cmpPos--; renderCompare(lastList); } };
 $("cmp-next").onclick = () => { if (cmpPos < N - 1) { cmpPos++; renderCompare(lastList); } };
