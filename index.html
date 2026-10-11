@@ -66,8 +66,12 @@
       <div class="row">
         <button class="link" id="back" type="button">Back</button>
         <button class="link" id="skip" type="button">Skip</button>
+        <button class="link" id="next" type="button">Next</button>
       </div>
       <div class="row">
+        <span class="goto"><label for="goto">Go to statement</label>
+          <input type="number" id="goto" min="1" max="221" inputmode="numeric" placeholder="#" autocomplete="off">
+          <button class="link" id="goto-go" type="button">Go</button></span>
         <span class="note" id="keys-hint">Keys 1–5 to answer, 0 to skip</span>
         <button class="link" id="finish" type="button">See my result now</button>
       </div>

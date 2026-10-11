@@ -196,12 +196,12 @@ for (const id of ["name", "tag"]) $(id).addEventListener("keydown", e => { if (e
 $("start").onclick = () => {
   st.name = cleanName($("name").value); st.tag = cleanTag($("tag").value);
   if (st.i >= N) st.i = 0;
-  st.fill = false; save(); show("quiz"); renderQ();
+  st.fill = false; st.editing = false; save(); show("quiz"); renderQ();
 };
 $("use-code").onclick = () => {
   const r = decode($("old-code").value);
   if (r.error) { $("old-code-note").className = "err"; $("old-code-note").textContent = CODE_ERRORS[r.error]; return; }
-  st = { ...st, name: r.name, tag: r.tag, answers: r.answers, i: 0, fill: false };
+  st = { ...st, name: r.name, tag: r.tag, answers: r.answers, i: 0, fill: false, editing: false, pos: 0 };
   $("name").value = r.name; $("tag").value = r.tag; syncStart();
   if (st.sent && st.sent.code !== r.code) st.sent = null;
   save(); showResult();
@@ -216,6 +216,7 @@ DISPLAY.forEach((v, n) => {
 });
 
 function renderQ() {
+  st.pos = st.i;                                            // remembered, so "Change my answers" resumes here
   const q = Q[ORDER[st.i]];
   const inSection = Q.filter(x => x.sec === q.sec);
   $("section-tag").textContent = SECTIONS[q.sec] + " · " + (inSection.indexOf(q) + 1) + " of " + inSection.length;
@@ -225,6 +226,8 @@ function renderQ() {
   [...ansBox.children].forEach(b => { const on = Number(b.dataset.v) === st.answers[ORDER[st.i]]; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
   $("back").style.visibility = st.i === 0 ? "hidden" : "visible";
   $("finish").hidden = answeredCount(st.answers) === 0;
+  $("goto").max = N; $("goto").value = "";
+  $("next").textContent = st.i + 1 >= N ? "Result" : "Next";
 }
 function advance() {
   if (st.fill) {                                            // only visiting skipped statements
@@ -235,10 +238,22 @@ function advance() {
   else st.i++;
   save(); renderQ();
 }
-function pick(v) { st.answers[ORDER[st.i]] = v; advance(); }
+function pick(v) {
+  st.answers[ORDER[st.i]] = v;
+  if (st.editing) { save(); renderQ(); return; }          // changing an answer keeps your place
+  advance();
+}
+$("next").onclick = () => { if (st.i + 1 >= N) { st.editing = false; save(); showResult(); } else { st.i++; save(); renderQ(); } };
+function gotoStatement() {
+  const n = parseInt($("goto").value, 10);
+  if (!(n >= 1 && n <= N)) { $("goto").value = ""; return; }
+  st.i = n - 1; st.fill = false; save(); renderQ();
+}
+$("goto-go").onclick = gotoStatement;
+$("goto").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); gotoStatement(); } });
 $("skip").onclick = () => { st.answers[ORDER[st.i]] = null; advance(); };
 $("back").onclick = () => { if (st.i > 0) { st.i--; save(); renderQ(); } };
-$("finish").onclick = () => { save(); showResult(); };
+$("finish").onclick = () => { st.editing = false; save(); showResult(); };
 document.addEventListener("keydown", e => {
   if ($("quiz").hidden || e.metaKey || e.ctrlKey || e.altKey || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
   if (e.key >= "1" && e.key <= "5") pick(DISPLAY[Number(e.key) - 1]);
@@ -277,7 +292,11 @@ function showResult() {
   show("result"); renderAll();
 }
 $("answer-skipped").onclick = () => { st.fill = true; st.i = ORDER.findIndex(qi => st.answers[qi] === null); save(); show("quiz"); renderQ(); };
-$("edit").onclick = () => { st.fill = false; st.i = 0; save(); show("quiz"); renderQ(); };
+$("edit").onclick = () => {
+  st.fill = false; st.editing = true;
+  st.i = Number.isInteger(st.pos) && st.pos >= 0 && st.pos < N ? st.pos : 0;      // resume where you were
+  save(); show("quiz"); renderQ();
+};
 $("retake").onclick = () => {
   const keep = { name: st.name, tag: st.tag, key: st.key, sent: st.sent };
   st = { ...blank(), ...keep }; save(); show("intro"); renderAll();
