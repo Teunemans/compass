@@ -24,9 +24,10 @@ const $ = id => document.getElementById(id);
 //   version 2: + 27 economy statements = 127
 //   version 3: + 12 Israel/Palestine and 19 foreign policy statements = 158
 //   version 4: + 22 policing and justice statements and 20 statements chosen to divide the group = 200
+//   version 5: + 12 statements to tell the left wing apart and 8 to recognise centrists = 220
 // ============================================================================================
-const CODE_LENGTHS = { 1: 100, 2: 127, 3: 158, 4: 200 };
-const CODE_VERSION = 4;
+const CODE_LENGTHS = { 1: 100, 2: 127, 3: 158, 4: 200, 5: 220 };
+const CODE_VERSION = 5;
 if (CODE_LENGTHS[CODE_VERSION] !== N) throw new Error("questions.js has " + N + " statements; update CODE_LENGTHS");
 const B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 const ansLen = n => Math.ceil(n * Math.log2(6) / 6);

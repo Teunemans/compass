@@ -243,5 +243,28 @@ window.COMPASS_QUESTIONS = [
   {id:"x17", sec:4, s:-1,   t:"Islam is compatible with European values."},
   {id:"x18", sec:2, e:-1,   t:"A four-day working week, with the same pay, should become the norm."},
   {id:"x19", sec:2, e:-1,   t:"Every adult should receive a basic income from the state, whether they work or not."},
-  {id:"x20", sec:5, s: 1,   t:"Governments should actively encourage people to have more children."}
+  {id:"x20", sec:5, s: 1,   t:"Governments should actively encourage people to have more children."},
+  // ---------- Added October 2026: statements to tell apart the left wing, and to recognise centrists (positions 201-220) ----------
+  // Telling the left apart: how far, how fast, and by what means
+  {id:"y01", sec:1, e:-1,   t:"Workers should own and run the companies they work in, instead of shareholders."},
+  {id:"y02", sec:2, e:-1,   t:"The big banks should be publicly owned."},
+  {id:"y03", sec:2, e:-1,   t:"Private schools should be abolished."},
+  {id:"y04", sec:0,         t:"Real change for ordinary people needs a break with the current economic system, not just gradual reforms."},
+  {id:"y05", sec:0,         t:"A market economy with a strong welfare state, as in the Nordic countries, is the best economic system there is."},
+  {id:"y06", sec:2, e:-1,   t:"Most of the economy should be planned democratically rather than left to markets."},
+  {id:"y07", sec:0,         t:"Class matters more than race, gender or sexuality in explaining who gets ahead."},
+  {id:"y08", sec:6, e:-0.5, t:"Rich countries should deliberately shrink their production and consumption to protect the planet."},
+  {id:"y09", sec:7, h:-1,   t:"NATO should be dissolved."},
+  {id:"y10", sec:4, s:-1,   t:"People should be free to live and work in any country they choose."},
+  {id:"y11", sec:3, s:-1,   t:"Prisons should be abolished and replaced by other ways of dealing with crime."},
+  {id:"y12", sec:9, e:-0.5, t:"The EU mainly serves big business rather than ordinary people."},
+  // The centre: moderation and compromise. These have no axis, so they only show who thinks alike.
+  {id:"c01", sec:0,         t:"On most issues, the best policy lies somewhere between left and right."},
+  {id:"c02", sec:0,         t:"Politicians should be willing to compromise rather than stick to their principles."},
+  {id:"c03", sec:0,         t:"Real solutions come from evidence and practical experience, not from left-wing or right-wing ideology."},
+  {id:"c04", sec:0,         t:"Change should be gradual: sudden, sweeping reforms usually do more harm than good."},
+  {id:"c05", sec:0,         t:"Both the market and the state have important roles, and neither should dominate."},
+  {id:"c06", sec:10,        t:"Parties on the far left and the far right are a danger to democracy."},
+  {id:"c07", sec:10,        t:"A government that makes steady small improvements is better than one that promises radical change."},
+  {id:"c08", sec:10,        t:"Politics is too polarised: on most issues both sides have a point."}
 ];
