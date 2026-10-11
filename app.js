@@ -772,7 +772,11 @@ $("people-filter").addEventListener("input", () => renderPeople(lastList));
 // ============================================================================================
 // 8. Compare answers
 // ============================================================================================
-let cmpOrder = ORDER.slice(), cmpPos = 0;
+// The statement picker lists the first batch by section, then every later batch at the bottom under its own heading.
+const BATCH_END = Object.keys(CODE_LENGTHS).map(Number).sort((a, b) => a - b).map(v => CODE_LENGTHS[v]);
+const batchOf = qi => BATCH_END.findIndex(L => qi < L) + 1;
+const BATCH_ORDER = ORDER.slice().sort((a, b) => batchOf(a) - batchOf(b) || POS[a] - POS[b]);
+let cmpOrder = BATCH_ORDER.slice(), cmpPos = 0;
 function spread(list, qi) {
   const vals = list.map(p => p.ans[qi]).filter(v => v !== null);
   if (vals.length < 2) return 0;
@@ -783,19 +787,21 @@ function renderCompare(list) {
   $("compare").hidden = list.length === 0;
   if (!list.length) return;
   const current = cmpOrder[cmpPos];
-  cmpOrder = ORDER.slice();
+  cmpOrder = BATCH_ORDER.slice();
   if ($("divisive").checked) cmpOrder.sort((a, b) => spread(list, b) - spread(list, a) || POS[a] - POS[b]);
   cmpPos = Math.max(0, cmpOrder.indexOf(current));
   const sel = $("cmp-select"); sel.textContent = "";
   const groups = {};
   cmpOrder.forEach((qi, pos) => {
-    const label = $("divisive").checked ? "Most divisive first" : SECTIONS[Q[qi].sec];
+    const b = batchOf(qi);
+    const label = $("divisive").checked ? "Most divisive first"
+      : b === 1 ? SECTIONS[Q[qi].sec] : "Batch " + b + " · " + (BATCH_END[b - 1] - BATCH_END[b - 2]) + " statements";
     if (!groups[label]) { groups[label] = document.createElement("optgroup"); groups[label].label = label; sel.appendChild(groups[label]); }
     const o = document.createElement("option"); o.value = pos; o.textContent = (POS[qi] + 1) + ". " + Q[qi].t; groups[label].appendChild(o);
   });
   sel.value = cmpPos;
   const qi = cmpOrder[cmpPos];
-  $("cmp-tag").textContent = SECTIONS[Q[qi].sec] + " · statement " + (POS[qi] + 1);
+  $("cmp-tag").textContent = SECTIONS[Q[qi].sec] + " · statement " + (POS[qi] + 1) + (batchOf(qi) > 1 ? " · batch " + batchOf(qi) : "");
   $("cmp-statement").textContent = Q[qi].t;
   $("cmp-axis").textContent = axisWords(Q[qi]);
   $("cmp-prev").disabled = cmpPos === 0; $("cmp-next").disabled = cmpPos === N - 1;
