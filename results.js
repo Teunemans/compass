@@ -11,4 +11,6 @@ window.COMPASS_RESULTS = [
   "C3AhU76b2U3XhHQ4JkoAfZUic5ESsNqsiqcGk_LH7fQktj2GMAbXihsGKHzJeliZzQzWpsEV7CD.Riley",
   "C3BTe_cEIG26ABBawrcEt4oeuH6rVQIcFK6Avficl564qeOsSAk_pnyh4XMNmZjA3TEHFDzoZAl.Alex_%28based%29%F0%9F%8C%B9",
   "C3AVQ--YoUgnpJXAcQy0t5z5E0kZEFkI4xDSKQXSCz7pYQWjQMvSPzYd0TuTglfOS65GDKHTBAa.The_real_Alexander",
+  "C3BTe1jjYNlrf04iSDKtPmVvB7VGRcmeHthKpjfkL76Is3T0e5n2erDZSdJkPiZ7rYHf7yiH1.Zoopy",
+  "C3A9lemsz3s05CWcvHoI_cI70tugSvrCAlpemNswAMlyl_Nv1l3g1ITSoHCqyDv6ZvLAwuao4LS.Lucas",
 ];
