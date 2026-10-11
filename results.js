@@ -2,7 +2,7 @@
 // Only add codes from people who ticked the consent box (or gave consent in writing).
 // To remove someone, delete their line. Codes from an older version are ignored with a warning.
 window.COMPASS_RESULTS = [
-  "C5BiNJVHP9aU6txEQOsVayaubLHZIStij2Dj-vqGdWMtTpxDXM2m87CDeVTR_p3XK0qNfpOQ2x6K94HgTfknWiyk19EXGUQyIExFT.Teun",
+  "C5BiNJVHO5bAY8mWET3cWkKGz9kYZT95nJS9L4lZEH8Hx191ytso1It9jVpnyuArK0qNfpOQ2x6K94HgTfknWiyk19EXGUQyIEOiT.Teun",
   "C5BXaOzY5siGoavAGcZk4rmTheItMW6f5n8ah65cEmzYPgf728eki-CHZVHWIEQi9VEC_Pz32kxwXsj1rIxravw6C5ErdFseB_TOSS.Samuel",
   "C5BiNOkB_k28fvmYhTM0AvgG1E3EPCK4k9kc_H3Qfzw7UWieVzGcf6XcXUY7bLvxdz3Tw646eT9O6KffDvJ0hD4L4uUrSp79jUN3CH.CHRISSY",
   "C5BzMCGSZnxAYTx7g0rOIRvlI2WgV7aXcnbTgrGCvUv1JmGV3Hox1v7WoM3ae4lDNEM_1HKwZAdUqEx3GWP7kTz378HdG4DqyveSGS.Gregor",
