@@ -5,6 +5,8 @@
 //   e:  +1 = agreeing is economically right-wing,   -1 = left-wing
 //   s:  +1 = agreeing is socially conservative,      -1 = progressive
 //   h:  +1 = agreeing is hawkish (hard power),       -1 = dovish
+//   a:  +1 = agreeing is authoritarian (state power over the individual), -1 = libertarian
+//       (the optional second vertical axis; it reuses statements, so it needs no new ones)
 //   0.5 means the statement counts half, because the link to that axis is weaker.
 // A statement with no axis is only used to compare people and for "closest to you".
 //
@@ -22,10 +24,10 @@ window.COMPASS_SECTIONS = [
 
 window.COMPASS_QUESTIONS = [
   // ---------- Foundations ----------
-  {id:"f01", sec:0, s: 1,   t:"Without firm rules and institutions, most people would behave badly."},
-  {id:"f02", sec:0,         t:"People have certain rights simply by being human, whatever the law of their country says."},
+  {id:"f01", sec:0, s: 1,   a:1, t:"Without firm rules and institutions, most people would behave badly."},
+  {id:"f02", sec:0,         a:-0.5, t:"People have certain rights simply by being human, whatever the law of their country says."},
   {id:"f03", sec:0,         t:"Some things are wrong even when doing them would lead to better outcomes overall."},
-  {id:"f04", sec:0, e: 1,   t:"You are free as long as nobody stops you, even if you lack the means to do what you want."},
+  {id:"f04", sec:0, e: 1,   a:-0.5, t:"You are free as long as nobody stops you, even if you lack the means to do what you want."},
   {id:"f05", sec:0, e: 1,   t:"What people earn in a free market is, broadly, what they deserve."},
   {id:"f06", sec:0, e:-1,   t:"Success in life depends more on luck than on effort."},
   {id:"f07", sec:0, e: 1,   t:"Unequal outcomes are not unfair, as long as everyone had a fair chance."},
@@ -58,16 +60,16 @@ window.COMPASS_QUESTIONS = [
   {id:"e17", sec:2, e: 1,   t:"Governments should balance their budgets, even if that means cutting services people value."},
 
   // ---------- State, law and liberty ----------
-  {id:"l01", sec:3, s:-1,   t:"Laws against hate speech are worth having, even if they limit free expression."},
-  {id:"l02", sec:3, s:-1,   t:"Private messaging apps should stay fully encrypted, even if that makes it harder to catch serious criminals."},
-  {id:"l03", sec:3, s: 1,   t:"Police should be allowed to use live facial recognition cameras in public places."},
-  {id:"l04", sec:3, s: 1,   t:"More police on the streets is the most effective way to reduce crime."},
-  {id:"l05", sec:3, s: 1,   t:"Prison sentences for serious crimes should be longer."},
-  {id:"l06", sec:3, s:-1,   t:"The main purpose of prison should be rehabilitation rather than punishment."},
-  {id:"l07", sec:3, s: 1,   t:"The death penalty should be allowed for the most serious crimes."},
-  {id:"l08", sec:3, s:-1,   t:"Cannabis should be legal and sold under regulation."},
-  {id:"l09", sec:3, s:-1,   t:"Possessing a small amount of any drug for personal use should not be a crime."},
-  {id:"l10", sec:3, s: 1,   t:"Protesters who deliberately block roads should face tougher penalties."},
+  {id:"l01", sec:3, s:-1,   a:1, t:"Laws against hate speech are worth having, even if they limit free expression."},
+  {id:"l02", sec:3, s:-1,   a:-1, t:"Private messaging apps should stay fully encrypted, even if that makes it harder to catch serious criminals."},
+  {id:"l03", sec:3, s: 1,   a:1, t:"Police should be allowed to use live facial recognition cameras in public places."},
+  {id:"l04", sec:3, s: 1,   a:0.5, t:"More police on the streets is the most effective way to reduce crime."},
+  {id:"l05", sec:3, s: 1,   a:1, t:"Prison sentences for serious crimes should be longer."},
+  {id:"l06", sec:3, s:-1,   a:-1, t:"The main purpose of prison should be rehabilitation rather than punishment."},
+  {id:"l07", sec:3, s: 1,   a:1, t:"The death penalty should be allowed for the most serious crimes."},
+  {id:"l08", sec:3, s:-1,   a:-1, t:"Cannabis should be legal and sold under regulation."},
+  {id:"l09", sec:3, s:-1,   a:-1, t:"Possessing a small amount of any drug for personal use should not be a crime."},
+  {id:"l10", sec:3, s: 1,   a:1, t:"Protesters who deliberately block roads should face tougher penalties."},
 
   // ---------- Nation, culture and migration ----------
   {id:"n01", sec:4, s: 1,   t:"Immigration to my country should be substantially reduced."},
@@ -80,17 +82,17 @@ window.COMPASS_QUESTIONS = [
   {id:"n08", sec:4, s:-1,   t:"Labour migration is good for my country's economy."},
   {id:"n09", sec:4, s:-1,   t:"Employers should be allowed to favour candidates from under-represented groups when hiring."},
   {id:"n10", sec:4, s: 1,   t:"Belonging to a nation is partly a matter of ancestry, not only of citizenship and culture."},
-  {id:"n11", sec:4, s: 1,   t:"Face veils such as the burqa and niqab should be banned in public."},
+  {id:"n11", sec:4, s: 1,   a:1, t:"Face veils such as the burqa and niqab should be banned in public."},
   {id:"n12", sec:4, s:-1,   t:"Racism is still a serious problem in my country."},
 
   // ---------- Morality, bodies and family ----------
-  {id:"m01", sec:5, s: 1,   t:"Abortion should be more restricted than it is today in my country."},
-  {id:"m02", sec:5, s:-1,   t:"Terminally ill adults should have the right to end their life with medical help."},
-  {id:"m03", sec:5, s: 1,   t:"Euthanasia should never be allowed for mental suffering alone."},
+  {id:"m01", sec:5, s: 1,   a:1, t:"Abortion should be more restricted than it is today in my country."},
+  {id:"m02", sec:5, s:-1,   a:-1, t:"Terminally ill adults should have the right to end their life with medical help."},
+  {id:"m03", sec:5, s: 1,   a:0.5, t:"Euthanasia should never be allowed for mental suffering alone."},
   {id:"m04", sec:5, s: 1,   t:"Whether someone is a man or a woman is determined by biological sex."},
-  {id:"m05", sec:5, s:-1,   t:"People should be able to change their legal gender without a medical diagnosis."},
-  {id:"m06", sec:5, s:-1,   t:"Doctors should be allowed to prescribe puberty blockers to young people with gender dysphoria."},
-  {id:"m07", sec:5, s:-1,   t:"Prostitution between consenting adults should be legal and regulated."},
+  {id:"m05", sec:5, s:-1,   a:-0.5, t:"People should be able to change their legal gender without a medical diagnosis."},
+  {id:"m06", sec:5, s:-1,   a:-0.5, t:"Doctors should be allowed to prescribe puberty blockers to young people with gender dysphoria."},
+  {id:"m07", sec:5, s:-1,   a:-1, t:"Prostitution between consenting adults should be legal and regulated."},
   {id:"m08", sec:5, s: 1,   t:"Children do best when raised by their married mother and father."},
   {id:"m09", sec:5, s:-1,   t:"Same-sex couples should have the same right to adopt as other couples."},
   {id:"m10", sec:5, s: 1,   t:"On average, men and women are naturally suited to different roles in society."},
@@ -100,9 +102,9 @@ window.COMPASS_QUESTIONS = [
   {id:"t02", sec:6, s: 1,   t:"Climate targets should be delayed if they push up energy bills."},
   {id:"t03", sec:6, s: 0.5, t:"My country should build new nuclear power stations."},
   {id:"t04", sec:6, s:-1,   t:"From 2035, only zero-emission new cars should be sold in the EU."},
-  {id:"t05", sec:6, s: 1,   t:"Farmers should not be forced to shrink their herds to meet nature or climate targets."},
+  {id:"t05", sec:6, s: 1,   a:-0.5, t:"Farmers should not be forced to shrink their herds to meet nature or climate targets."},
   {id:"t06", sec:6, s:-1,   t:"Animal welfare should limit how we farm, even if food becomes more expensive."},
-  {id:"t07", sec:6,         t:"Governments should strictly regulate artificial intelligence, even if that slows innovation."},
+  {id:"t07", sec:6,         a:0.5, t:"Governments should strictly regulate artificial intelligence, even if that slows innovation."},
   {id:"t08", sec:6, e: 0.5, t:"Rich countries still need economic growth to improve people's lives."},
 
   // ---------- Foreign policy and security ----------
@@ -134,7 +136,7 @@ window.COMPASS_QUESTIONS = [
 
   // ---------- Democracy and institutions ----------
   {id:"d01", sec:10,         t:"Important national decisions should be settled by binding referendums."},
-  {id:"d02", sec:10, s: 1,   t:"My country should leave the European Convention on Human Rights if that is needed to control migration."},
+  {id:"d02", sec:10, s: 1,   a:1, t:"My country should leave the European Convention on Human Rights if that is needed to control migration."},
   {id:"d03", sec:10,         t:"Some decisions, such as setting interest rates, are better left to independent experts than to elected politicians."},
   {id:"d04", sec:10, s: 1,   t:"Monarchies are worth keeping, in countries that have one."},
   {id:"d05", sec:10, s:-1,   t:"The voting age should be lowered to 16."},
@@ -167,7 +169,7 @@ window.COMPASS_QUESTIONS = [
   {id:"e30", sec:2, e: 1,   t:"People should mostly save for their own pension, rather than rely on a state pension paid by today's workers."},
   {id:"e31", sec:2, e: 1,   t:"Strikes in essential services, such as hospitals and trains, should only be allowed if a minimum service keeps running."},
   {id:"e32", sec:2, e:-1,   t:"Platforms such as Uber and Deliveroo should have to employ their drivers and couriers."},
-  {id:"e33", sec:2, e: 0.5, t:"Shops should be free to open on Sundays."},
+  {id:"e33", sec:2, e: 0.5, a:-0.5, t:"Shops should be free to open on Sundays."},
   // ---------- Added October 2026: Israel and Palestine, and more foreign policy (positions 128-158) ----------
   // Israel and Palestine
   {id:"i01", sec:8, s: 0.5, t:"Israel has the right to exist as a Jewish state."},
@@ -202,28 +204,28 @@ window.COMPASS_QUESTIONS = [
   {id:"p33", sec:7, h:-1,   t:"Withdrawing from Afghanistan in 2021 was the right decision, even though the Taliban took over."},
   {id:"p34", sec:7, h:-1,   t:"Europe should accept that Russia has a sphere of influence in its neighbourhood."},
   {id:"p35", sec:7, h:-1,   t:"Nuclear weapons should eventually be abolished worldwide."},
-  {id:"j01", sec:3, s: 1,   t:"Police should be able to stop and search people in high-crime areas without needing a specific reason to suspect them."},
-  {id:"j02", sec:3, s: 1,   t:"Police spend too much time on offensive posts online and too little on burglary and theft."},
-  {id:"j03", sec:3, s: 1,   t:"Prisoners should serve their full sentence, even when prisons are full and that means building more."},
-  {id:"j04", sec:3, s:-1,   t:"Most short prison sentences should be replaced by community sentences."},
-  {id:"j05", sec:3, s: 1,   t:"Foreign nationals who commit a serious crime should be deported after serving their sentence."},
+  {id:"j01", sec:3, s: 1,   a:1, t:"Police should be able to stop and search people in high-crime areas without needing a specific reason to suspect them."},
+  {id:"j02", sec:3, s: 1,   a:-0.5, t:"Police spend too much time on offensive posts online and too little on burglary and theft."},
+  {id:"j03", sec:3, s: 1,   a:1, t:"Prisoners should serve their full sentence, even when prisons are full and that means building more."},
+  {id:"j04", sec:3, s:-1,   a:-1, t:"Most short prison sentences should be replaced by community sentences."},
+  {id:"j05", sec:3, s: 1,   a:0.5, t:"Foreign nationals who commit a serious crime should be deported after serving their sentence."},
   {id:"j06", sec:3, s:-1,   t:"Judges should be able to take an offender's ethnic or cultural background into account when sentencing."},
-  {id:"j07", sec:3,         t:"Everyone accused of a serious crime should keep the right to a jury trial, even if that makes courts slower."},
+  {id:"j07", sec:3,         a:-1, t:"Everyone accused of a serious crime should keep the right to a jury trial, even if that makes courts slower."},
   {id:"j08", sec:3, s: 0.5, t:"Ordinary police officers on patrol should carry firearms."},
   {id:"j09", sec:3, s:-1,   t:"Police in my country treat ethnic minorities unfairly."},
-  {id:"j10", sec:3, s: 1,   t:"People should be allowed to use whatever force they think necessary against an intruder in their home."},
+  {id:"j10", sec:3, s: 1,   a:-0.5, t:"People should be allowed to use whatever force they think necessary against an intruder in their home."},
   {id:"j11", sec:3, s:-1,   t:"Some police funding should go to mental health and youth services instead."},
-  {id:"j12", sec:3, s: 1,   t:"Teenagers who commit serious violent crimes should be tried and sentenced as adults."},
-  {id:"j13", sec:3, s: 1,   t:"Carrying a knife in public without good reason should mean an automatic prison sentence."},
-  {id:"j14", sec:3, s:-1,   t:"Nobody should be sentenced to life in prison without any chance of release."},
+  {id:"j12", sec:3, s: 1,   a:1, t:"Teenagers who commit serious violent crimes should be tried and sentenced as adults."},
+  {id:"j13", sec:3, s: 1,   a:1, t:"Carrying a knife in public without good reason should mean an automatic prison sentence."},
+  {id:"j14", sec:3, s:-1,   a:-1, t:"Nobody should be sentenced to life in prison without any chance of release."},
   {id:"j15", sec:3, s: 1,   t:"Fear of being called racist has stopped authorities from tackling some serious crimes."},
-  {id:"j16", sec:3, s:-1,   t:"Prisoners should keep the right to vote."},
-  {id:"j17", sec:3, s: 1,   t:"Police should be able to keep the DNA of everyone they arrest, even if they are never charged."},
+  {id:"j16", sec:3, s:-1,   a:-0.5, t:"Prisoners should keep the right to vote."},
+  {id:"j17", sec:3, s: 1,   a:1, t:"Police should be able to keep the DNA of everyone they arrest, even if they are never charged."},
   {id:"j18", sec:3, s:-1,   t:"Crime is mostly caused by poverty and a lack of opportunities."},
   {id:"j19", sec:3, s:-0.5, t:"Victims should be offered the chance to meet their offender, as part of the sentence, if both agree."},
-  {id:"j20", sec:3, s:-1,   t:"Police officers who kill someone on duty should be prosecuted like anyone else."},
-  {id:"j21", sec:3, s: 1,   t:"Attacks on police officers and other emergency workers should be punished much more harshly."},
-  {id:"u08", sec:9, s:-0.5, t:"European countries should share police data and hand over suspects to each other almost automatically, including the UK."},
+  {id:"j20", sec:3, s:-1,   a:-1, t:"Police officers who kill someone on duty should be prosecuted like anyone else."},
+  {id:"j21", sec:3, s: 1,   a:0.5, t:"Attacks on police officers and other emergency workers should be punished much more harshly."},
+  {id:"u08", sec:9, s:-0.5, a:0.5, t:"European countries should share police data and hand over suspects to each other almost automatically, including the UK."},
   {id:"x01", sec:1, e: 1,   t:"Capitalism has done more good than harm for ordinary people."},
   {id:"x02", sec:1, e:-1,   t:"Being a landlord is not a fair way to earn a living."},
   {id:"x03", sec:0, e: 0.5, t:"Communism deserves the same moral condemnation as fascism."},
@@ -231,8 +233,8 @@ window.COMPASS_QUESTIONS = [
   {id:"x05", sec:4, s:-1,   t:"The British Empire did more harm than good."},
   {id:"x06", sec:4, s:-1,   t:"Former colonial powers should pay reparations to the countries they colonised."},
   {id:"x07", sec:5, s: 1,   t:"Trans women should not compete in women's sports."},
-  {id:"x08", sec:3, s: 0.5, t:"Social media platforms should moderate posts less, even if that means more hateful content."},
-  {id:"x09", sec:3,         t:"Social media should be banned for children under 16."},
+  {id:"x08", sec:3, s: 0.5, a:-1, t:"Social media platforms should moderate posts less, even if that means more hateful content."},
+  {id:"x09", sec:3,         a:1, t:"Social media should be banned for children under 16."},
   {id:"x10", sec:8, s:-0.5, t:"Israel is an apartheid state."},
   {id:"x11", sec:7,         t:"Europe should hit back with its own tariffs whenever the United States raises tariffs on European goods."},
   {id:"x12", sec:7,         t:"The United States is no longer a reliable ally for Europe."},
@@ -255,8 +257,8 @@ window.COMPASS_QUESTIONS = [
   {id:"y07", sec:0,         t:"Racism and sexism are mainly products of the economic system, and would fade if economic inequality were removed."},
   {id:"y08", sec:6, e:-0.5, t:"Rich countries should deliberately shrink their production and consumption to protect the planet."},
   {id:"y09", sec:7, h:-1,   t:"NATO should be dissolved."},
-  {id:"y10", sec:4, s:-1,   t:"People should be free to live and work in any country they choose."},
-  {id:"y11", sec:3, s:-1,   t:"Prisons should be abolished and replaced by other ways of dealing with crime."},
+  {id:"y10", sec:4, s:-1,   a:-1, t:"People should be free to live and work in any country they choose."},
+  {id:"y11", sec:3, s:-1,   a:-1, t:"Prisons should be abolished and replaced by other ways of dealing with crime."},
   {id:"y12", sec:9, e:-0.5, t:"The EU mainly serves big business rather than ordinary people."},
   // Mirror images of the statements above, so the extra left-wing statements do not pull the centre of the compass to the right
   {id:"z01", sec:2, e: 1,   t:"Most state-owned companies should be privatised."},
@@ -267,5 +269,5 @@ window.COMPASS_QUESTIONS = [
   {id:"z06", sec:9, e: 0.5, t:"The EU should cut its regulations so that businesses can compete more freely."},
   {id:"z07", sec:7, h: 1,   t:"NATO should be strengthened and given a bigger role in the world."},
   {id:"z08", sec:4, s: 1,   t:"Only highly skilled migrants should be allowed to settle permanently in my country."},
-  {id:"z09", sec:3, s: 1,   t:"Prisons should be places of strict discipline and hard work, not comfort."}
+  {id:"z09", sec:3, s: 1,   a:1, t:"Prisons should be places of strict discipline and hard work, not comfort."}
 ];

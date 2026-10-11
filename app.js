@@ -136,7 +136,7 @@ function removalKey() {
 // ============================================================================================
 // For each axis: average over the statements this person answered that feed the axis,
 // scaled to −100…+100. Unanswered statements simply don't count.
-const MIN_ON_AXIS = { e: 6, s: 8, h: 4 };
+const MIN_ON_AXIS = { e: 6, s: 8, h: 4, a: 8 };
 function axisScore(ans, ax) {
   let sum = 0, max = 0, n = 0;
   Q.forEach((q, i) => {
@@ -146,7 +146,15 @@ function axisScore(ans, ax) {
   });
   return n >= MIN_ON_AXIS[ax] ? Math.round(sum / max * 100) : null;
 }
-const scoresOf = ans => ({ x: axisScore(ans, "e"), y: axisScore(ans, "s"), h: axisScore(ans, "h") });
+// The vertical axis can be switched: "s" = progressive–conservative (social), "a" = libertarian–authoritarian.
+const VERT = {
+  s: { name: "Social", low: "Progressive", high: "Conservative", neg: "progressive", pos: "conservative" },
+  a: { name: "Authority", low: "Libertarian", high: "Authoritarian", neg: "libertarian", pos: "authoritarian" }
+};
+let vert = "s";
+try { if (localStorage.getItem("compass-v1-vert") === "a") vert = "a"; } catch (e) {}
+const V = () => VERT[vert];
+const scoresOf = ans => ({ x: axisScore(ans, "e"), y: axisScore(ans, vert), h: axisScore(ans, "h") });
 
 // Agreement between two people: 100% minus the average distance between their answers
 // (a full disagreement, strongly agree vs strongly disagree, is a distance of 4).
@@ -168,7 +176,7 @@ function word(v, neg, pos) {
 }
 function axisWords(q) {
   const part = (v, pos, neg, axis) => v ? (v > 0 ? pos : neg) + " (" + axis + (Math.abs(v) < 1 ? ", half weight" : "") + ")" : null;
-  const parts = [part(q.e, "right", "left", "economic"), part(q.s, "conservative", "progressive", "social"), part(q.h, "hawk", "dove", "foreign policy")].filter(Boolean);
+  const parts = [part(q.e, "right", "left", "economic"), part(q.s, "conservative", "progressive", "social"), part(q.a, "authoritarian", "libertarian", "authority"), part(q.h, "hawk", "dove", "foreign policy")].filter(Boolean);
   return parts.length ? "Agreeing counts as " + parts.join(", ") + "." : "This statement isn't on any axis; it only counts for comparing people.";
 }
 
@@ -270,12 +278,15 @@ const myCode = () => encode(st.name, st.tag, st.answers);
 const formReady = () => { const f = CFG.form || {}; return !!(f.action && f.code && f.kind && f.key); };
 const xLink = () => '<a href="https://x.com/' + CFG.ownerX + '" target="_blank" rel="noopener">@' + CFG.ownerX + "</a>";
 
-function showResult() {
-  st.seen = true; save();
+function fillScores() {
   const { x, y, h } = scoresOf(st.answers);
   $("sx").textContent = fmt(x); $("sx-l").textContent = "Economic · " + word(x, "left", "right");
-  $("sy").textContent = fmt(y); $("sy-l").textContent = "Social · " + word(y, "progressive", "conservative");
+  $("sy").textContent = fmt(y); $("sy-l").textContent = V().name + " · " + word(y, V().neg, V().pos);
   $("sh").textContent = fmt(h); $("sh-l").textContent = "Foreign policy · " + word(h, "dove", "hawk");
+}
+function showResult() {
+  st.seen = true; save();
+  fillScores();
   const done = answeredCount(st.answers);
   $("answered-note").textContent = "You answered " + done + " of " + N + " statements. Scores use only the ones you answered; −100 to +100 per axis.";
   $("unanswered-row").hidden = done === N;
@@ -396,7 +407,7 @@ async function shareImage() {
     g.fillStyle = "#15171c"; g.font = font(700, 48); g.fillText(fmt(v), X0, 260);
     g.fillStyle = "#5f636b"; g.font = font(400, 26); g.fillText(label + " · " + word(v, neg, pos), X0, 300);
   };
-  stat(0, "Economic", x, "left", "right"); stat(1, "Social", y, "progressive", "conservative"); stat(2, "Foreign policy", h, "dove", "hawk");
+  stat(0, "Economic", x, "left", "right"); stat(1, V().name, y, V().neg, V().pos); stat(2, "Foreign policy", h, "dove", "hawk");
   // compass
   const L = 280, S = 640, M = v => L + (v + 100) / 200 * S, top = 400, MY = v => top + (v + 100) / 200 * S;
   g.strokeStyle = "#eceef1"; g.lineWidth = 2;
@@ -405,7 +416,7 @@ async function shareImage() {
   g.strokeStyle = "#c3c6cc"; g.lineWidth = 2.5;
   g.beginPath(); g.moveTo(L, MY(0)); g.lineTo(L + S, MY(0)); g.moveTo(M(0), top); g.lineTo(M(0), top + S); g.stroke();
   g.fillStyle = "#5f636b"; g.font = font(600, 24); g.textAlign = "center";
-  g.fillText("PROGRESSIVE", M(0), top - 22); g.fillText("CONSERVATIVE", M(0), top + S + 42);
+  g.fillText(V().low.toUpperCase(), M(0), top - 22); g.fillText(V().high.toUpperCase(), M(0), top + S + 42);
   g.textAlign = "right"; g.fillText("LEFT", L - 18, MY(0) + 8);
   g.textAlign = "left"; g.fillText("RIGHT", L + S + 18, MY(0) + 8);
   const others = lastList.filter(p => !p.you && p.x !== null && p.y !== null);
@@ -527,7 +538,7 @@ function svgEl(tag, attrs, text) { const n = document.createElementNS(SVGNS, tag
 const ballR = n => n > 80 ? 8 : n > 40 ? 10 : 12;
 let focusKey = null;
 const isFocus = p => focusKey !== null && p.key === focusKey;
-const describe = p => p.name + (p.local ? " (only you see this)" : "") + ": economic " + fmt(p.x) + ", social " + fmt(p.y) + ", hawk–dove " + fmt(p.h);
+const describe = p => p.name + (p.local ? " (only you see this)" : "") + ": economic " + fmt(p.x) + ", " + V().name.toLowerCase() + " " + fmt(p.y) + ", hawk–dove " + fmt(p.h);
 
 function htmlBall(p) {
   const b = document.createElement("span");
@@ -576,8 +587,8 @@ function renderCompass(list) {
   svg.appendChild(svgEl("rect", { class: "frame", x: 50, y: 50, width: 320, height: 320 }));
   svg.appendChild(svgEl("line", { class: "axis", x1: 50, y1: 210, x2: 370, y2: 210 }));
   svg.appendChild(svgEl("line", { class: "axis", x1: 210, y1: 50, x2: 210, y2: 370 }));
-  svg.appendChild(svgEl("text", { class: "axlab", x: 210, y: 36, "text-anchor": "middle" }, "Progressive"));
-  svg.appendChild(svgEl("text", { class: "axlab", x: 210, y: 394, "text-anchor": "middle" }, "Conservative"));
+  svg.appendChild(svgEl("text", { class: "axlab", x: 210, y: 36, "text-anchor": "middle" }, V().low));
+  svg.appendChild(svgEl("text", { class: "axlab", x: 210, y: 394, "text-anchor": "middle" }, V().high));
   svg.appendChild(svgEl("text", { class: "axlab", x: 44, y: 214, "text-anchor": "end" }, "Left"));
   svg.appendChild(svgEl("text", { class: "axlab", x: 376, y: 214 }, "Right"));
   const shown = list.filter(p => p.x !== null && p.y !== null);
@@ -618,7 +629,7 @@ function renderHawk(list) {
   if (!$("hawk").hidden) renderBar($("hawk-plot"), pts, "Dove", "Hawk");
 }
 
-// ---------- 3D: economic × social × hawk–dove ----------
+// ---------- 3D: economic × social (or authority) × hawk–dove ----------
 let view = "2d", yaw = -0.62, pitch = 0.32, lastList = [];
 try { if (localStorage.getItem(KEY + "-view") === "3d") view = "3d"; } catch (e) {}
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -659,7 +670,7 @@ function render3d(list) {
   line([-1, 0, 0], [1, 0, 0], "axis"); line([0, -1, 0], [0, 1, 0], "axis"); line([0, 0, -1], [0, 0, 1], "axis");
   const label = (pos, text) => { const p = proj(...pos); svg.appendChild(svgEl("text", { class: "axlab", x: p.x, y: p.y + 4, "text-anchor": "middle" }, text)); };
   label([-1.22, 0, 0], "Left"); label([1.22, 0, 0], "Right");
-  label([0, 1.22, 0], "Progressive"); label([0, -1.22, 0], "Conservative");
+  label([0, 1.22, 0], V().low); label([0, -1.22, 0], V().high);
   label([0, 0, -1.22], "Dove"); label([0, 0, 1.22], "Hawk");
   const shown = list.filter(p => p.x !== null && p.y !== null);
   const r0 = ballR(shown.length);
@@ -731,7 +742,7 @@ function renderFocus(list) {
   $("focus").hidden = !p;
   if (!p) { focusKey = null; return; }
   $("focus-title").textContent = p.you ? "You" : p.name;
-  $("focus-scores").textContent = "Economic " + fmt(p.x) + " · social " + fmt(p.y) + " · hawk–dove " + fmt(p.h) + " · " + answeredCount(p.ans) + " answers" + (p.local ? " · only you see this" : "") + (p.newer ? " · the group still has your earlier answers" : "");
+  $("focus-scores").textContent = "Economic " + fmt(p.x) + " · " + V().name.toLowerCase() + " " + fmt(p.y) + " · hawk–dove " + fmt(p.h) + " · " + answeredCount(p.ans) + " answers" + (p.local ? " · only you see this" : "") + (p.newer ? " · the group still has your earlier answers" : "");
   const r = ranked(p, list), box = $("focus-list"); box.textContent = "";
   if (!r.length) { box.innerHTML = '<p class="note">Nobody to compare with yet.</p>'; return; }
   const head = t => { const h = document.createElement("p"); h.className = "note"; h.textContent = t; box.appendChild(h); };
@@ -777,7 +788,7 @@ function renderPeople(list) {
     const sc = document.createElement("span"); sc.className = "sc";
     const pct = me && me !== p ? agreement(me.ans, p.ans) : null;
     sc.textContent = fmt(p.x) + " / " + fmt(p.y) + " / " + fmt(p.h) + (pct !== null ? " · " + pct + "%" : "");
-    sc.title = "Economic / social / hawk–dove" + (pct !== null ? " · agreement with you" : "");
+    sc.title = "Economic / " + V().name.toLowerCase() + " / hawk–dove" + (pct !== null ? " · agreement with you" : "");
     row.append(htmlBall(p), nm, sc);
     row.onclick = () => setFocus(p.key);
     box.appendChild(row);
@@ -904,7 +915,14 @@ $("theme").onclick = () => {
 };
 syncThemeButton();
 
+function setVert(v) {
+  vert = v; try { localStorage.setItem("compass-v1-vert", v); } catch (e) {}
+  if (!$("result").hidden) fillScores();
+  renderAll();
+}
+document.querySelectorAll("[data-vert]").forEach(b => { b.onclick = () => setVert(b.dataset.vert); });
 function renderAll() {
+  document.querySelectorAll("[data-vert]").forEach(b => b.classList.toggle("on", b.dataset.vert === vert));
   const list = people(); lastList = list;
   const three = view === "3d";
   // SVG elements have no .hidden property (only HTML elements do), so set the attribute itself.
