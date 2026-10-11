@@ -47,7 +47,7 @@ window.COMPASS_QUESTIONS = [
   {id:"e06", sec:2, e: 1,   t:"People who can work but turn down a suitable job should lose their benefits."},
   {id:"e07", sec:2, e:-1,   t:"Strong trade unions are good for a country."},
   {id:"e08", sec:2, e: 1,   t:"It should be easier for employers to dismiss employees."},
-  {id:"e09", sec:2, e:-1,   t:"The minimum wage should be raised substantially, even if some jobs are lost."},
+  {id:"e09", sec:2, e:-1,   t:"Minimum pay, whether set by law or by union agreements, should be raised substantially, even if some jobs are lost."},
   {id:"e10", sec:2, e:-1,   t:"Rent controls are a good way to keep housing affordable."},
   {id:"e11", sec:2, e: 0.5, t:"Planning rules should be loosened so far more homes can be built, even when neighbours object."},
   {id:"e12", sec:2, e: 1,   t:"The pension age should keep rising along with life expectancy."},
@@ -260,7 +260,7 @@ window.COMPASS_QUESTIONS = [
   {id:"y12", sec:9, e:-0.5, t:"The EU mainly serves big business rather than ordinary people."},
   // Mirror images of the statements above, so the extra left-wing statements do not pull the centre of the compass to the right
   {id:"z01", sec:2, e: 1,   t:"Most state-owned companies should be privatised."},
-  {id:"z02", sec:2, e: 1,   t:"The minimum wage should be abolished, leaving wages to employers and workers."},
+  {id:"z02", sec:2, e: 1,   t:"Employers should be free to pay whatever a worker agrees to, with no legal or union-agreed minimum."},
   {id:"z03", sec:2, e: 1,   t:"The state should be much smaller: government spending should be cut by a quarter."},
   {id:"z04", sec:2, e: 1,   t:"Welfare should be limited to a basic safety net for people who cannot work."},
   {id:"z05", sec:6, e: 0.5, t:"Economic growth should be the government's top priority."},
