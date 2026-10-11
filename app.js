@@ -480,7 +480,9 @@ function people() {
     if (r.error) { groupWarnings.push({ n: n + 1, error: r.error }); return; }
     if (byCode.has(r.code)) return;
     byCode.add(r.code);
-    list.push({ key: r.code, name: r.name, tag: r.tag, ans: r.answers, you: false, local: false });
+    // Teun can override a person's label in config.js (labelOverrides), without changing their code.
+    const tag = (CFG.labelOverrides || {})[r.name] ?? r.tag;
+    list.push({ key: r.code, name: r.name, tag, ans: r.answers, you: false, local: false });
   });
   if (st.seen && st.name && answeredCount(st.answers)) {
     const code = myCode();

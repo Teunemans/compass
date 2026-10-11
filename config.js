@@ -3,6 +3,11 @@ window.COMPASS_CONFIG = {
   owner: "Teun",
   ownerX: "Teunemansvb",          // X handle for removal requests and questions (without @)
 
+  // Labels on the balls, by name, replacing the label people chose themselves (max 3 letters/digits).
+  labelOverrides: {
+    "Riley": "Ry"
+  },
+
   // Google Form "Compass results" that receives results; responses go to the Sheet
   // "Compass results (responses)" in Teun's Drive. Leave action empty to switch sending off;
   // the page then only shows the copy-your-code route. See README.md for how to fill this in.
