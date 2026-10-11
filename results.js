@@ -12,6 +12,6 @@ window.COMPASS_RESULTS = [
   "C5AfwB9T4XZ22eKYQmajlvlldz2lmspDTJuifqE1KyZYxhTdwVMQ7lgwRMcDnGc7T5P5aMTeeOsSAk_pnyh4XMNmZjA3TEHFDzfJAl.Alex_%E2%98%AD",
   "C3AVQ--YoUgnpJXAcQy0t5z5E0kZEFkI4xDSKQXSCz7pYQWjQMvSPzYd0TuTglfOS65GDKHEIAa.Alexander",
   "C3BTe1jjYNlrf04iSDKtPmVvB7VGRcmeHthKpjfkL76Is3T0e5n2erDZSdJkPiZ7rYHf7yiH1.Zoopy",
-  "C4BZ8o2OcPa27DecvWh8MJtTYDDrMrJR-TNgj2R3diyaX_xq2M0A9nkLpNbz0cV_Nv1l3g0oqog3ovaIOXZvLAwuac0LS.Lucas",
+  "C5BZmq6w-DGMMDAUU2ucVgbanG6-Q0SVbMgH1Vl1b193Zly1SvmhmL-TVSjwWpkD_pNbz0cV_Nv1l3g0oqog3ovaIOXZvLAwuaAyLS.Lucas",
   "C4A0vch1W_XAuwSyJHp388Qg4cpCpaHfxaG2FYzKxnbhFRpDC7pGrcQf_tDyQRamY5oAHh25UCjNELu34s8haUb4MyGTy.Tymon",
 ];
