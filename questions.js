@@ -244,7 +244,7 @@ window.COMPASS_QUESTIONS = [
   {id:"x18", sec:2, e:-1,   t:"A four-day working week, with the same pay, should become the norm."},
   {id:"x19", sec:2, e:-1,   t:"Every adult should receive a basic income from the state, whether they work or not."},
   {id:"x20", sec:5, s: 1,   t:"Governments should actively encourage people to have more children."},
-  // ---------- Added October 2026: statements to tell apart the left wing, and to recognise centrists (positions 201-220) ----------
+  // ---------- Added October 2026: statements to tell the left wing apart, plus mirror-image right-wing ones to keep the centre in the middle (positions 201-221) ----------
   // Telling the left apart: how far, how fast, and by what means
   {id:"y01", sec:1, e:-1,   t:"Workers should own and run the companies they work in, instead of shareholders."},
   {id:"y02", sec:2, e:-1,   t:"The big banks should be publicly owned."},
@@ -258,13 +258,14 @@ window.COMPASS_QUESTIONS = [
   {id:"y10", sec:4, s:-1,   t:"People should be free to live and work in any country they choose."},
   {id:"y11", sec:3, s:-1,   t:"Prisons should be abolished and replaced by other ways of dealing with crime."},
   {id:"y12", sec:9, e:-0.5, t:"The EU mainly serves big business rather than ordinary people."},
-  // The centre: moderation and compromise. These have no axis, so they only show who thinks alike.
-  {id:"c01", sec:0,         t:"On most issues, the best policy lies somewhere between left and right."},
-  {id:"c02", sec:0,         t:"Politicians should be willing to compromise rather than stick to their principles."},
-  {id:"c03", sec:0,         t:"Real solutions come from evidence and practical experience, not from left-wing or right-wing ideology."},
-  {id:"c04", sec:0,         t:"Change should be gradual: sudden, sweeping reforms usually do more harm than good."},
-  {id:"c05", sec:0,         t:"Both the market and the state have important roles, and neither should dominate."},
-  {id:"c06", sec:10,        t:"Parties on the far left and the far right are a danger to democracy."},
-  {id:"c07", sec:10,        t:"A government that makes steady small improvements is better than one that promises radical change."},
-  {id:"c08", sec:10,        t:"Politics is too polarised: on most issues both sides have a point."}
+  // Mirror images of the statements above, so the extra left-wing statements do not pull the centre of the compass to the right
+  {id:"z01", sec:2, e: 1,   t:"Most state-owned companies should be privatised."},
+  {id:"z02", sec:2, e: 1,   t:"The minimum wage should be abolished, leaving wages to employers and workers."},
+  {id:"z03", sec:2, e: 1,   t:"The state should be much smaller: government spending should be cut by a quarter."},
+  {id:"z04", sec:2, e: 1,   t:"Welfare should be limited to a basic safety net for people who cannot work."},
+  {id:"z05", sec:6, e: 0.5, t:"Economic growth should be the government's top priority."},
+  {id:"z06", sec:9, e: 0.5, t:"The EU should cut its regulations so that businesses can compete more freely."},
+  {id:"z07", sec:7, h: 1,   t:"NATO should be strengthened and given a bigger role in the world."},
+  {id:"z08", sec:4, s: 1,   t:"Only highly skilled migrants should be allowed to settle permanently in my country."},
+  {id:"z09", sec:3, s: 1,   t:"Prisons should be places of strict discipline and hard work, not comfort."}
 ];
