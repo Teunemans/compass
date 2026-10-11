@@ -252,7 +252,7 @@ window.COMPASS_QUESTIONS = [
   {id:"y04", sec:0,         t:"Real change for ordinary people needs a break with the current economic system, not just gradual reforms."},
   {id:"y05", sec:0,         t:"A market economy with a strong welfare state, as in the Nordic countries, is the best economic system there is."},
   {id:"y06", sec:2, e:-1,   t:"Most of the economy should be planned democratically rather than left to markets."},
-  {id:"y07", sec:0,         t:"Class matters more than race, gender or sexuality in explaining who gets ahead."},
+  {id:"y07", sec:0,         t:"Racism and sexism are mainly products of the economic system, and would fade if economic inequality were removed."},
   {id:"y08", sec:6, e:-0.5, t:"Rich countries should deliberately shrink their production and consumption to protect the planet."},
   {id:"y09", sec:7, h:-1,   t:"NATO should be dissolved."},
   {id:"y10", sec:4, s:-1,   t:"People should be free to live and work in any country they choose."},
