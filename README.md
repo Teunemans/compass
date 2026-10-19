@@ -1,6 +1,6 @@
 # Compass
 
-A political quiz of 100 statements, with everyone's results on one shared compass.
+A political quiz of 135 statements, with everyone's results on one shared compass.
 It's a static site: plain HTML, CSS and JavaScript, no build step and no server of its own.
 
 ## What's in this folder
@@ -10,7 +10,7 @@ It's a static site: plain HTML, CSS and JavaScript, no build step and no server 
 | `index.html` | The page: the quiz, your result, the group views. |
 | `style.css` | All styling. Light mode by default; the Dark button switches theme. |
 | `app.js` | All behaviour: quiz, scores, result codes, labels and colours, the 2D/3D compass, comparing, sending. |
-| `questions.js` | The 100 statements and which axis each one feeds. |
+| `questions.js` | The 135 statements and which axis each one feeds. |
 | `STATEMENTS.md` | A readable table of the statements (generated from `questions.js`). |
 | `results.js` | The built-in group: one result code per person. |
 | `config.js` | Your settings: X handle and the Google Form that receives results. |
@@ -75,7 +75,7 @@ After editing `questions.js`, regenerate `STATEMENTS.md` (or ask Claude to).
 
 ## How the result code works
 
-`C3` (version) + 69 characters for the 158 answers + 2 check characters + your label + `.` + your name.
+`C7` (version) + characters for the 135 answers + 2 check characters + your label + `.` + your name.
 Each answer has 6 states (skipped or one of 5 points), so the answers form one big base-6 number, written
 in base 64. A typical code is about 80 characters. The check characters catch codes that were cut off or mistyped.
 
