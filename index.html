@@ -84,6 +84,10 @@
       <div class="score"><b id="sx">–</b><span id="sx-l">Economic</span></div>
       <div class="score"><b id="sy">–</b><span id="sy-l">Social</span></div>
       <div class="score"><b id="sh">–</b><span id="sh-l">Foreign policy</span></div>
+      <div class="score"><b id="su">–</b><span id="su-l">EU</span></div>
+      <div class="score"><b id="sg">–</b><span id="sg-l">Environment</span></div>
+      <div class="score"><b id="sn">–</b><span id="sn-l">Nation</span></div>
+      <div class="score"><b id="sp">–</b><span id="sp-l">Establishment</span></div>
     </div>
     <div class="row"><div class="seg" role="group" aria-label="Vertical axis"><button data-vert="s" class="on" type="button">Social</button><button data-vert="a" type="button">Authority</button></div><span class="note">Switch the vertical axis of the compass</span></div>
     <p class="note" id="answered-note"></p>
@@ -139,10 +143,7 @@
     <svg class="chart" id="plot3d" viewBox="0 0 420 420" role="img" tabindex="0" aria-label="Three-dimensional compass: economic, social and hawk–dove. Drag or use the arrow keys to rotate." hidden></svg>
     <p class="note" id="rotate-hint" style="text-align:center" hidden>Drag to rotate · the third axis runs from dove to hawk</p>
     <p class="note" id="group-note"></p>
-    <div class="sub" id="hawk" hidden>
-      <h3>Dove or hawk</h3>
-      <svg class="chart" id="hawk-plot" viewBox="0 0 420 100" role="img" aria-label="Everyone placed from dove to hawk on foreign policy"></svg>
-    </div>
+    <div id="bars" class="bars"></div>
     <div class="sub" id="focus" hidden>
       <div class="row spread"><h3 id="focus-title"></h3><button class="link" id="focus-clear" type="button">Close</button></div>
       <p class="note" id="focus-scores"></p>

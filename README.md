@@ -47,7 +47,7 @@ Until `action` is filled in, the page tells people to copy their code and send i
 
 ## Adding people to the group
 
-Rows in the sheet have `kind` = `add` or `remove`. Nothing goes public automatically: you decide.
+Rows in the sheet have `kind` = `add` or `remove`. From 19 October 2026 the group is live: the site reads a published tab of the sheet (codes only, never the removal keys), so nothing has to be pushed. A `remove` row hides the matching `add` row automatically.
 
 - **With Claude:** ask "check the Compass sheet and add the new results". Claude opens the Sheet "Compass results (responses)" in the Claude browser, where you're signed in to the account that owns it (your Google Drive connector is linked to a different account), and updates `results.js`.
 - **Yourself:** open your site with `?owner` at the end of the address (for example `.../Compass/?owner`). Paste codes into the box, one per line. The compass previews them in your browser. Then "Copy as results.js", paste that into `results.js`, commit and push.
@@ -83,3 +83,17 @@ in base 64. A typical code is about 80 characters. The check characters catch co
 
 `python3 -m pip install playwright`, then `python3 tests/run.py`. It checks the codes, the labels, the quiz flow,
 sending (to a fake form), and saves screenshots at desktop and phone width in `tests/screenshots/`.
+
+## Live results (no push needed)
+
+The page reads `liveCsv` from `config.js` every minute: a published CSV of a tab in the response sheet that holds **only the result codes**.
+Your computer is never involved (no server, no Docker, no IP address), Google serves the file.
+
+1. In the response sheet add a tab called `public`.
+2. In cell A1 paste the formula below (change `'Form Responses 1'` if your responses tab has another name; columns are
+   A time, B code, C kind, D key, E consent). It keeps the newest `add` per key that has consent and no later `remove`, and shows only the code column:
+
+   `=LET(r,FILTER('Form Responses 1'!A2:E,'Form Responses 1'!C2:C="add",'Form Responses 1'!E2:E<>""),rm,IFERROR(FILTER('Form Responses 1'!D2:D,'Form Responses 1'!C2:C="remove"),"-"),u,SORTN(SORT(r,1,FALSE),9^9,2,4,TRUE),INDEX(FILTER(u,ISNA(MATCH(INDEX(u,,4),rm,0))),,2))`
+
+3. File → Share → Publish to web → choose only the `public` tab, format CSV → Publish. Copy the link into `liveCsv`.
+4. Never publish the whole workbook: the other tab contains the removal keys.

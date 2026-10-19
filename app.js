@@ -25,9 +25,12 @@ const $ = id => document.getElementById(id);
 //   version 3: + 12 Israel/Palestine and 19 foreign policy statements = 158
 //   version 4: + 22 policing and justice statements and 20 statements chosen to divide the group = 200
 //   version 5: + 12 statements to tell the left wing apart and 9 mirror-image right-wing ones = 221
+//   version 6: NEW GROUP (19 October 2026). Redundant statements removed and more added (EU, environment,
+//              nation, establishment): 225 statements. Codes from versions 1–5 are no longer accepted;
+//              they are kept in the git tag group1-backup.
 // ============================================================================================
-const CODE_LENGTHS = { 1: 100, 2: 127, 3: 158, 4: 200, 5: 221 };
-const CODE_VERSION = 5;
+const CODE_LENGTHS = { 6: 225 };
+const CODE_VERSION = 6;
 if (CODE_LENGTHS[CODE_VERSION] !== N) throw new Error("questions.js has " + N + " statements; update CODE_LENGTHS");
 const B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 const ansLen = n => Math.ceil(n * Math.log2(6) / 6);
@@ -136,7 +139,7 @@ function removalKey() {
 // ============================================================================================
 // For each axis: average over the statements this person answered that feed the axis,
 // scaled to −100…+100. Unanswered statements simply don't count.
-const MIN_ON_AXIS = { e: 6, s: 8, h: 4, a: 8 };
+const MIN_ON_AXIS = { e: 6, s: 8, h: 4, a: 8, u: 6, g: 5, n: 6, p: 5 };
 function axisScore(ans, ax) {
   let sum = 0, max = 0, n = 0;
   Q.forEach((q, i) => {
@@ -154,7 +157,17 @@ const VERT = {
 let vert = "s";
 try { if (localStorage.getItem("compass-v1-vert") === "a") vert = "a"; } catch (e) {}
 const V = () => VERT[vert];
-const scoresOf = ans => ({ x: axisScore(ans, "e"), y: axisScore(ans, vert), h: axisScore(ans, "h") });
+const scoresOf = ans => ({ x: axisScore(ans, "e"), y: axisScore(ans, vert), h: axisScore(ans, "h"), u: axisScore(ans, "u"), g: axisScore(ans, "g"), n: axisScore(ans, "n"), p: axisScore(ans, "p") });
+
+// Extra axes, drawn as bars under the compass (and as tiles on your result).
+// k = key in questions.js, neg/pos = what a low/high score is called.
+const BARS = [
+  { k: "h", id: "hawk", title: "Dove or hawk",                 name: "Foreign policy", neg: "dove",          pos: "hawk",           low: "Dove",          high: "Hawk" },
+  { k: "u", id: "eu",   title: "Eurosceptic or pro-EU",        name: "EU",             neg: "Eurosceptic",   pos: "pro-EU",         low: "Eurosceptic",   high: "Pro-EU" },
+  { k: "g", id: "env",  title: "Growth first or nature first", name: "Environment",    neg: "growth first",  pos: "environment first", low: "Growth first", high: "Nature first" },
+  { k: "n", id: "nat",  title: "Globalist or nationalist",     name: "Nation",         neg: "globalist",     pos: "nationalist",    low: "Globalist",     high: "Nationalist" },
+  { k: "p", id: "est",  title: "Establishment or anti-establishment", name: "Establishment", neg: "trusts the establishment", pos: "anti-establishment", low: "Establishment", high: "Anti-establishment" }
+];
 
 // Agreement between two people: 100% minus the average distance between their answers
 // (a full disagreement, strongly agree vs strongly disagree, is a distance of 4).
@@ -176,7 +189,7 @@ function word(v, neg, pos) {
 }
 function axisWords(q) {
   const part = (v, pos, neg, axis) => v ? (v > 0 ? pos : neg) + " (" + axis + (Math.abs(v) < 1 ? ", half weight" : "") + ")" : null;
-  const parts = [part(q.e, "right", "left", "economic"), part(q.s, "conservative", "progressive", "social"), part(q.a, "authoritarian", "libertarian", "authority"), part(q.h, "hawk", "dove", "foreign policy")].filter(Boolean);
+  const parts = [part(q.e, "right", "left", "economic"), part(q.s, "conservative", "progressive", "social"), part(q.a, "authoritarian", "libertarian", "authority"), part(q.h, "hawk", "dove", "foreign policy"), part(q.u, "pro-EU", "Eurosceptic", "EU"), part(q.g, "environment first", "growth first", "environment"), part(q.n, "nationalist", "globalist", "nation"), part(q.p, "anti-establishment", "trusts the establishment", "establishment")].filter(Boolean);
   return parts.length ? "Agreeing counts as " + parts.join(", ") + "." : "This statement isn't on any axis; it only counts for comparing people.";
 }
 
@@ -279,7 +292,8 @@ const formReady = () => { const f = CFG.form || {}; return !!(f.action && f.code
 const xLink = () => '<a href="https://x.com/' + CFG.ownerX + '" target="_blank" rel="noopener">@' + CFG.ownerX + "</a>";
 
 function fillScores() {
-  const { x, y, h } = scoresOf(st.answers);
+  const sc = scoresOf(st.answers), { x, y, h } = sc;
+  BARS.forEach(b => { if (b.k !== "h") { $("s" + b.k).textContent = fmt(sc[b.k]); $("s" + b.k + "-l").textContent = b.name + " · " + word(sc[b.k], b.neg, b.pos); } });
   $("sx").textContent = fmt(x); $("sx-l").textContent = "Economic · " + word(x, "left", "right");
   $("sy").textContent = fmt(y); $("sy-l").textContent = V().name + " · " + word(y, V().neg, V().pos);
   $("sh").textContent = fmt(h); $("sh-l").textContent = "Foreign policy · " + word(h, "dove", "hawk");
@@ -327,7 +341,7 @@ function renderSend() {
   $("send-btn").disabled = !$("consent").checked || (ready && st.sent && st.sent.code === code);
   if (st.sent && st.sent.code === code) {
     $("send-status").className = "ok";
-    $("send-status").textContent = "Sent on " + new Date(st.sent.at).toLocaleDateString() + ". Teun adds results by hand, so it can take a day or two.";
+    $("send-status").textContent = "Sent on " + new Date(st.sent.at).toLocaleDateString() + ". It shows up in the group within about ten minutes.";
   } else if ($("send-status").className === "ok") $("send-status").textContent = "";
 }
 $("consent").onchange = renderSend;
@@ -382,7 +396,7 @@ $("remove-btn").onclick = async () => {
   $("remove-btn").disabled = true; $("remove-status").textContent = "Sending…";
   try {
     await postToForm("remove", st.sent.code);
-    $("remove-status").className = "ok"; $("remove-status").textContent = "Removal requested. It's done by hand, usually within a few days.";
+    $("remove-status").className = "ok"; $("remove-status").textContent = "Removal requested. You disappear from the group within about ten minutes.";
     st.sent = null; save(); renderSend();
   } catch (e) {
     $("remove-btn").disabled = false; $("remove-status").className = "err"; $("remove-status").textContent = "That didn't go through. Try again, or message Teun on X.";
@@ -391,12 +405,12 @@ $("remove-btn").onclick = async () => {
 
 // A shareable picture of your position: white background, plain labels, sized for posts on X.
 async function shareImage() {
-  const W = 1200, H = 1200, c = document.createElement("canvas");
+  const W = 1200, H = 1620, c = document.createElement("canvas");
   c.width = W; c.height = H;
   const g = c.getContext("2d");
   const font = (w, px) => w + " " + px + "px 'IBM Plex Sans', system-ui, sans-serif";
   try { await Promise.all([document.fonts.load(font(400, 20)), document.fonts.load(font(600, 20)), document.fonts.load(font(700, 20))]); } catch (e) {}
-  const { x, y, h } = scoresOf(st.answers);
+  const sc = scoresOf(st.answers), { x, y, h } = sc;
   g.fillStyle = "#ffffff"; g.fillRect(0, 0, W, H);
   g.fillStyle = "#15171c"; g.font = font(700, 56); g.textBaseline = "alphabetic";
   g.fillText(st.name, 80, 120);
@@ -426,8 +440,19 @@ async function shareImage() {
     g.fillStyle = "#15171c"; g.beginPath(); g.arc(M(x), MY(y), 30, 0, 7); g.fill();
     g.fillStyle = "#c62828"; g.beginPath(); g.arc(M(x), MY(y), 25, 0, 7); g.fill();
   }
-  g.fillStyle = "#5f636b"; g.font = font(400, 24); g.textAlign = "left";
-  g.fillText(others.length ? "Grey dots: the " + others.length + " other people in the group" : "", 80, H - 50);
+  // one row per extra axis: everyone as a grey dot, you in red
+  g.textBaseline = "middle";
+  BARS.forEach((b, i) => {
+    const yy = 1190 + i * 70, X = v => 360 + (v + 100) / 200 * 480;
+    g.fillStyle = "#5f636b"; g.font = font(600, 24); g.textAlign = "right"; g.fillText(b.low, 330, yy);
+    g.textAlign = "left"; g.fillText(b.high, 870, yy);
+    g.strokeStyle = "#c3c6cc"; g.lineWidth = 3; g.beginPath(); g.moveTo(360, yy); g.lineTo(840, yy); g.stroke();
+    g.strokeStyle = "#dfe0e3"; g.beginPath(); g.moveTo(X(0), yy - 12); g.lineTo(X(0), yy + 12); g.stroke();
+    g.fillStyle = "#c9ccd2";
+    for (const p of lastList) if (!p.you && p[b.k] !== null) { g.beginPath(); g.arc(X(p[b.k]), yy, 8, 0, 7); g.fill(); }
+    if (sc[b.k] !== null) { g.fillStyle = "#15171c"; g.beginPath(); g.arc(X(sc[b.k]), yy, 19, 0, 7); g.fill(); g.fillStyle = "#c62828"; g.beginPath(); g.arc(X(sc[b.k]), yy, 15, 0, 7); g.fill(); }
+  });
+  g.textBaseline = "alphabetic"; g.fillStyle = "#5f636b"; g.font = font(400, 24);
   g.textAlign = "right"; g.fillText(location.host + location.pathname.replace(/index\.html$/, ""), W - 80, H - 50);
   const blob = await new Promise(res => c.toBlob(res, "image/png"));
   const file = new File([blob], "compass-" + (st.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") || "result") + ".png", { type: "image/png" });
@@ -624,9 +649,18 @@ function renderBar(svg, pts, leftLabel, rightLabel) {
   [...placed].sort((a, b) => (a.p.you || isFocus(a.p)) - (b.p.you || isFocus(b.p))).forEach(o => svg.appendChild(svgBall(o.p, o.cx, base + o.lane * LANE, r)));
 }
 function renderHawk(list) {
-  const pts = list.filter(p => p.h !== null).map(p => ({ p, h: p.h }));
-  $("hawk").hidden = view !== "2d" || !pts.length;
-  if (!$("hawk").hidden) renderBar($("hawk-plot"), pts, "Dove", "Hawk");
+  BARS.forEach(b => {
+    let box = $(b.id);
+    if (!box) {                                                // build the block the first time it is needed
+      box = document.createElement("div"); box.className = "sub"; box.id = b.id; box.hidden = true;
+      const h3 = document.createElement("h3"); h3.textContent = b.title;
+      const svg = svgEl("svg", { class: "chart", id: b.id + "-plot", viewBox: "0 0 420 100", role: "img", "aria-label": "Everyone placed from " + b.low.toLowerCase() + " to " + b.high.toLowerCase() });
+      box.append(h3, svg); $("bars").appendChild(box);
+    }
+    const pts = list.filter(p => p[b.k] !== null).map(p => ({ p, h: p[b.k] }));
+    box.hidden = view !== "2d" || !pts.length;
+    if (!box.hidden) renderBar($(b.id + "-plot"), pts, b.low, b.high);
+  });
 }
 
 // ---------- 3D: economic × social (or authority) × hawk–dove ----------
@@ -742,7 +776,7 @@ function renderFocus(list) {
   $("focus").hidden = !p;
   if (!p) { focusKey = null; return; }
   $("focus-title").textContent = p.you ? "You" : p.name;
-  $("focus-scores").textContent = "Economic " + fmt(p.x) + " · " + V().name.toLowerCase() + " " + fmt(p.y) + " · hawk–dove " + fmt(p.h) + " · " + answeredCount(p.ans) + " answers" + (p.local ? " · only you see this" : "") + (p.newer ? " · the group still has your earlier answers" : "");
+  $("focus-scores").textContent = "Economic " + fmt(p.x) + " · " + V().name.toLowerCase() + " " + fmt(p.y) + " · hawk–dove " + fmt(p.h) + " · EU " + fmt(p.u) + " · environment " + fmt(p.g) + " · nation " + fmt(p.n) + " · establishment " + fmt(p.p) + " · " + answeredCount(p.ans) + " answers" + (p.local ? " · only you see this" : "") + (p.newer ? " · the group still has your earlier answers" : "");
   const r = ranked(p, list), box = $("focus-list"); box.textContent = "";
   if (!r.length) { box.innerHTML = '<p class="note">Nobody to compare with yet.</p>'; return; }
   const head = t => { const h = document.createElement("p"); h.className = "note"; h.textContent = t; box.appendChild(h); };
@@ -946,13 +980,20 @@ async function refreshGroup() {
     if (!r.ok) return;
     const text = await r.text(), start = text.indexOf("COMPASS_RESULTS");
     if (start < 0) return;
-    const codes = [...text.slice(start).matchAll(/"([^"\n]+)"/g)].map(m => m[1]);
-    if (JSON.stringify(codes) === JSON.stringify(window.COMPASS_RESULTS || [])) return;
-    window.COMPASS_RESULTS = codes;
-    if (OWNER) $("owner-codes").value = codes.join("\n");
-    renderAll();
+    fileCodes = [...text.slice(start).matchAll(/"([^"\n]+)"/g)].map(m => m[1]);
   } catch (e) {}
+  // Live results: the published Google Sheet tab (codes only), so nothing has to be pushed to GitHub.
+  if (CFG.liveCsv) try {
+    const r = await fetch(CFG.liveCsv, { cache: "no-cache" });
+    if (r.ok) { const ok = new RegExp("^C" + CODE_VERSION + "[A-Za-z0-9_-]+\\.[A-Za-z0-9_%-]+$"); liveCodes = (await r.text()).split(/\r?\n/).map(l => l.replace(/^"|"$/g, "").trim()).filter(l => ok.test(l)); }
+  } catch (e) {}
+  const codes = [...fileCodes, ...liveCodes];
+  if (JSON.stringify(codes) === JSON.stringify(window.COMPASS_RESULTS || [])) return;
+  window.COMPASS_RESULTS = codes;
+  if (OWNER) $("owner-codes").value = codes.join("\n");
+  renderAll();
 }
+let fileCodes = [], liveCodes = [];
 refreshGroup();
 setInterval(() => { if (document.visibilityState === "visible") refreshGroup(); }, 60000);
 if (location.hash === "#remove") openRemove();
