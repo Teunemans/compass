@@ -1,4 +1,4 @@
-# Compass statements (v3, 158)
+# Compass statements (v7, 135)
 
 The tag says where *agreeing* pushes you. ½ = counts half. "Compare only" = no axis, used for comparing people and "closest to you".
 
@@ -6,213 +6,190 @@ The source of truth is `questions.js`; this file is generated from it for readin
 
 ## Foundations
 
-| # | Statement | Agreeing = |
+| # | Statement | Agreeing counts as |
 |---|---|---|
-| 1 | Without firm rules and institutions, most people would behave badly. | Conservative |
-| 2 | People have certain rights simply by being human, whatever the law of their country says. | compare only |
-| 3 | Some things are wrong even when doing them would lead to better outcomes overall. | compare only |
-| 4 | You are free as long as nobody stops you, even if you lack the means to do what you want. | Right |
-| 5 | What people earn in a free market is, broadly, what they deserve. | Right |
-| 6 | Success in life depends more on luck than on effort. | Left |
-| 7 | Unequal outcomes are not unfair, as long as everyone had a fair chance. | Right |
-| 8 | When governments step in to solve problems, they usually do more good than harm. | Left |
-| 9 | We owe more to our fellow citizens than to people in other countries. | Conservative |
-| 10 | Traditions deserve respect, even when we can no longer fully explain why they exist. | Conservative |
-| 11 | Societies usually get better when they break with old customs. | Progressive |
-| 12 | A society needs religion, or something like it, to keep shared moral values alive. | Conservative |
-| 13 | Religious beliefs should play no part in making laws. | Progressive |
-| 14 | Life in Europe today is better, in almost every way, than it was fifty years ago. | Progressive |
-| 15 | Differences in outcomes between men and women, or between ethnic groups, are mostly caused by discrimination. | Progressive |
+| f01 | Without firm rules and institutions, most people would behave badly. | conservative (social); authoritarian (authority) |
+| f02 | People have certain rights simply by being human, whatever the law of their country says. | libertarian (authority, ½) |
+| f05 | What people earn in a free market is, broadly, what they deserve. | right (economic) |
+| f08 | When governments step in to solve problems, they usually do more good than harm. | left (economic) |
+| f09 | We owe more to our fellow citizens than to people in other countries. | conservative (social); nationalist (nation) |
+| f10 | Traditions deserve respect, even when we can no longer fully explain why they exist. | conservative (social) |
+| f11 | Societies usually get better when they break with old customs. | progressive (social) |
+| f12 | A society needs religion, or something like it, to keep shared moral values alive. | conservative (social) |
+| f13 | Religious beliefs should play no part in making laws. | progressive (social) |
+| f15 | Differences in outcomes between men and women, or between ethnic groups, are mostly caused by discrimination. | progressive (social) |
+| x03 | Communism deserves the same moral condemnation as fascism. | right (economic, ½) |
 
 ## Economic values
 
-| # | Statement | Agreeing = |
+| # | Statement | Agreeing counts as |
 |---|---|---|
-| 16 | Private property is a basic right that the state should rarely override. | Right |
-| 17 | A fair economy meets everyone's basic needs before anyone becomes very rich. | Left |
-| 18 | Profit is a fair reward for taking risks and creating value. | Right |
-| 19 | In a fair society, there would be no billionaires. | Left |
-| 20 | Most people who are poor are poor because of circumstances beyond their control. | Left |
-| 21 | In my country, hard work is usually rewarded. | Right |
-| 22 | Competition between companies makes society better off. | Right |
-| 23 | Healthcare and education should never be run for profit. | Left |
-| 24 | Generous welfare makes people less willing to work. | Right |
-| 25 | Reducing economic inequality matters more than economic growth. | Left |
-| 26 | When entrepreneurs get rich, society as a whole usually benefits too. | Right |
+| v01 | Private property is a basic right that the state should rarely override. | right (economic) |
+| v02 | A fair economy meets everyone's basic needs before anyone becomes very rich. | left (economic) |
+| v11 | When entrepreneurs get rich, society as a whole usually benefits too. | right (economic) |
+| x01 | Capitalism has done more good than harm for ordinary people. | right (economic) |
+| y01 | Workers should own and run the companies they work in, instead of shareholders. | left (economic) |
 
 ## Economy
 
-| # | Statement | Agreeing = |
+| # | Statement | Agreeing counts as |
 |---|---|---|
-| 27 | Private companies usually run services better than the state does. | Right |
-| 28 | Railways should be run by the state rather than by private companies. | Left |
-| 29 | Electricity grids and gas pipelines should be publicly owned. | Left |
-| 30 | The wealthiest should pay an annual tax on their total wealth, not just on their income. | Left |
-| 31 | Taxes on work should be cut, even if that means less money for public services. | Right |
-| 32 | People who can work but turn down a suitable job should lose their benefits. | Right |
-| 33 | Strong trade unions are good for a country. | Left |
-| 34 | It should be easier for employers to dismiss employees. | Right |
-| 35 | The minimum wage should be raised substantially, even if some jobs are lost. | Left |
-| 36 | Rent controls are a good way to keep housing affordable. | Left |
-| 37 | Planning rules should be loosened so far more homes can be built, even when neighbours object. | Right ½ |
-| 38 | The pension age should keep rising along with life expectancy. | Right |
-| 39 | Free trade is good for us, even when some local industries lose out. | Right |
-| 40 | Governments should subsidise strategic industries, such as chips and batteries, rather than leave them to the market. | Left |
-| 41 | The gap between rich and poor in my country is too large. | Left |
-| 42 | Inheritance tax should be abolished. | Right |
-| 43 | Governments should balance their budgets, even if that means cutting services people value. | Right |
-| 44 | Healthcare should be paid for mainly through taxes rather than through insurance. | Left |
-| 45 | People should be allowed to pay for private treatment to avoid waiting lists. | Right |
-| 46 | University should be free for students, paid for by taxes. | Left |
-| 47 | Parents should be able to spend public school funding at the school of their choice, including private schools. | Right |
-| 48 | Workers should elect representatives to the boards of large companies. | Left |
-| 49 | Zero-hours contracts should be banned. | Left |
-| 50 | Everyone should pay the same percentage of their income in income tax. | Right |
-| 51 | The top rate of income tax should be raised. | Left |
-| 52 | Corporation tax should be cut to attract businesses. | Right |
-| 53 | The state should build large numbers of social housing homes. | Left |
-| 54 | The government should cap energy and food prices when they rise sharply. | Left |
-| 55 | Unemployment benefits should stop after a fixed period. | Right |
-| 56 | People should mostly save for their own pension, rather than rely on a state pension paid by today's workers. | Right |
-| 57 | Strikes in essential services, such as hospitals and trains, should only be allowed if a minimum service keeps running. | Right |
-| 58 | Platforms such as Uber and Deliveroo should have to employ their drivers and couriers. | Left |
-| 59 | Shops should be free to open on Sundays. | Right ½ |
+| e01 | Private companies usually run services better than the state does. | right (economic) |
+| e02 | Railways should be run by the state rather than by private companies. | left (economic) |
+| e04 | The wealthiest should pay an annual tax on their total wealth, not just on their income. | left (economic) |
+| e06 | People who can work but turn down a suitable job should lose their benefits. | right (economic) |
+| e07 | Strong trade unions are good for a country. | left (economic) |
+| e09 | Minimum pay, whether set by law or by union agreements, should be raised substantially, even if some jobs are lost. | left (economic) |
+| e13 | Free trade is good for us, even when some local industries lose out. | right (economic); globalist (nation, ½) |
+| e15 | The gap between rich and poor in my country is too large. | left (economic) |
+| e16 | Inheritance tax should be abolished. | right (economic) |
+| e17 | Governments should balance their budgets, even if that means cutting services people value. | right (economic) |
+| e18 | Healthcare should be paid for mainly through taxes rather than through insurance. | left (economic) |
+| e20 | University should be free for students, paid for by taxes. | left (economic) |
+| e25 | The top rate of income tax should be raised. | left (economic) |
+| e26 | Corporation tax should be cut to attract businesses. | right (economic) |
+| x19 | Every adult should receive a basic income from the state, whether they work or not. | left (economic) |
+| z01 | Most state-owned companies should be privatised. | right (economic) |
+| z02 | Employers should be free to pay whatever a worker agrees to, with no legal or union-agreed minimum. | right (economic) |
 
 ## State, law and liberty
 
-| # | Statement | Agreeing = |
+| # | Statement | Agreeing counts as |
 |---|---|---|
-| 60 | Laws against hate speech are worth having, even if they limit free expression. | Progressive |
-| 61 | Private messaging apps should stay fully encrypted, even if that makes it harder to catch serious criminals. | Progressive |
-| 62 | Police should be allowed to use live facial recognition cameras in public places. | Conservative |
-| 63 | More police on the streets is the most effective way to reduce crime. | Conservative |
-| 64 | Prison sentences for serious crimes should be longer. | Conservative |
-| 65 | The main purpose of prison should be rehabilitation rather than punishment. | Progressive |
-| 66 | The death penalty should be allowed for the most serious crimes. | Conservative |
-| 67 | Cannabis should be legal and sold under regulation. | Progressive |
-| 68 | Possessing a small amount of any drug for personal use should not be a crime. | Progressive |
-| 69 | Protesters who deliberately block roads should face tougher penalties. | Conservative |
+| l01 | Laws against hate speech are worth having, even if they limit free expression. | progressive (social); authoritarian (authority) |
+| l02 | Private messaging apps should stay fully encrypted, even if that makes it harder to catch serious criminals. | progressive (social); libertarian (authority) |
+| l03 | Police should be allowed to use live facial recognition cameras in public places. | conservative (social); authoritarian (authority) |
+| l05 | Prison sentences for serious crimes should be longer. | conservative (social); authoritarian (authority) |
+| l06 | The main purpose of prison should be rehabilitation rather than punishment. | progressive (social); libertarian (authority) |
+| l10 | Protesters who deliberately block roads should face tougher penalties. | conservative (social); authoritarian (authority) |
+| j01 | Police should be able to stop and search people in high-crime areas without needing a specific reason to suspect them. | conservative (social); authoritarian (authority) |
+| j05 | Foreign nationals who commit a serious crime should be deported after serving their sentence. | conservative (social); authoritarian (authority, ½) |
+| j09 | Police in my country treat ethnic minorities unfairly. | progressive (social) |
+| j11 | Some police funding should go to mental health and youth services instead. | progressive (social) |
+| j12 | Teenagers who commit serious violent crimes should be tried and sentenced as adults. | conservative (social); authoritarian (authority) |
+| j13 | Carrying a knife in public without good reason should mean an automatic prison sentence. | conservative (social); authoritarian (authority) |
+| j20 | Police officers who kill someone on duty should be prosecuted like anyone else. | progressive (social); libertarian (authority) |
+| x09 | Social media should be banned for children under 16. | authoritarian (authority) |
+| y11 | Prisons should be abolished and replaced by other ways of dealing with crime. | progressive (social); libertarian (authority) |
 
 ## Nation, culture and migration
 
-| # | Statement | Agreeing = |
+| # | Statement | Agreeing counts as |
 |---|---|---|
-| 70 | Immigration to my country should be substantially reduced. | Conservative |
-| 71 | People who move to a country should be expected to adopt its way of life. | Conservative |
-| 72 | A society where many cultures live side by side is richer for it. | Progressive |
-| 73 | Patriotism is a virtue. | Conservative |
-| 74 | A country's history should be examined critically rather than celebrated. | Progressive |
-| 75 | Europe should take in refugees fleeing war, even in large numbers. | Progressive |
-| 76 | Asylum claims should be processed in countries outside Europe. | Conservative |
-| 77 | Labour migration is good for my country's economy. | Progressive |
-| 78 | Employers should be allowed to favour candidates from under-represented groups when hiring. | Progressive |
-| 79 | Belonging to a nation is partly a matter of ancestry, not only of citizenship and culture. | Conservative |
-| 80 | Face veils such as the burqa and niqab should be banned in public. | Conservative |
-| 81 | Racism is still a serious problem in my country. | Progressive |
+| n01 | Immigration to my country should be substantially reduced. | conservative (social); nationalist (nation, ½) |
+| n02 | People who move to a country should be expected to adopt its way of life. | conservative (social); nationalist (nation, ½) |
+| n03 | A society where many cultures live side by side is richer for it. | progressive (social); globalist (nation, ½) |
+| n04 | Patriotism is a virtue. | conservative (social); nationalist (nation) |
+| n05 | A country's history should be examined critically rather than celebrated. | progressive (social) |
+| n06 | Europe should take in refugees fleeing war, even in large numbers. | progressive (social) |
+| n08 | Labour migration is good for my country's economy. | progressive (social) |
+| n10 | Belonging to a nation is partly a matter of ancestry, not only of citizenship and culture. | conservative (social); nationalist (nation) |
+| n11 | Face veils such as the burqa and niqab should be banned in public. | conservative (social); authoritarian (authority) |
+| n12 | Racism is still a serious problem in my country. | progressive (social) |
+| x16 | Western culture is better than most other cultures. | conservative (social); nationalist (nation) |
+| x17 | Islam is compatible with European values. | progressive (social) |
+| y10 | People should be free to live and work in any country they choose. | progressive (social); libertarian (authority); globalist (nation) |
+| n13 | National sovereignty matters more than international agreements. | nationalist (nation) |
+| n14 | My country's interests should come before those of other countries. | nationalist (nation) |
+| n15 | Big problems such as climate and pandemics need global institutions with real power. | globalist (nation) |
+| n16 | I am a citizen of the world first and of my country second. | globalist (nation) |
+| n17 | A country should protect its own industries and workers from foreign competition. | nationalist (nation) |
 
 ## Morality, bodies and family
 
-| # | Statement | Agreeing = |
+| # | Statement | Agreeing counts as |
 |---|---|---|
-| 82 | Abortion should be more restricted than it is today in my country. | Conservative |
-| 83 | Terminally ill adults should have the right to end their life with medical help. | Progressive |
-| 84 | Euthanasia should never be allowed for mental suffering alone. | Conservative |
-| 85 | Whether someone is a man or a woman is determined by biological sex. | Conservative |
-| 86 | People should be able to change their legal gender without a medical diagnosis. | Progressive |
-| 87 | Doctors should be allowed to prescribe puberty blockers to young people with gender dysphoria. | Progressive |
-| 88 | Prostitution between consenting adults should be legal and regulated. | Progressive |
-| 89 | Children do best when raised by their married mother and father. | Conservative |
-| 90 | Same-sex couples should have the same right to adopt as other couples. | Progressive |
-| 91 | On average, men and women are naturally suited to different roles in society. | Conservative |
+| m01 | Abortion should be more restricted than it is today in my country. | conservative (social); authoritarian (authority) |
+| m02 | Terminally ill adults should have the right to end their life with medical help. | progressive (social); libertarian (authority) |
+| m04 | Whether someone is a man or a woman is determined by biological sex. | conservative (social) |
+| m05 | People should be able to change their legal gender without a medical diagnosis. | progressive (social); libertarian (authority, ½) |
+| m09 | Same-sex couples should have the same right to adopt as other couples. | progressive (social) |
+| m10 | On average, men and women are naturally suited to different roles in society. | conservative (social) |
+| x07 | Trans women should not compete in women's sports. | conservative (social) |
+| x20 | Governments should actively encourage people to have more children. | conservative (social) |
 
 ## Environment, technology and science
 
-| # | Statement | Agreeing = |
+| # | Statement | Agreeing counts as |
 |---|---|---|
-| 92 | Fighting climate change should come before economic growth. | Progressive |
-| 93 | Climate targets should be delayed if they push up energy bills. | Conservative |
-| 94 | My country should build new nuclear power stations. | Conservative ½ |
-| 95 | From 2035, only zero-emission new cars should be sold in the EU. | Progressive |
-| 96 | Farmers should not be forced to shrink their herds to meet nature or climate targets. | Conservative |
-| 97 | Animal welfare should limit how we farm, even if food becomes more expensive. | Progressive |
-| 98 | Governments should strictly regulate artificial intelligence, even if that slows innovation. | compare only |
-| 99 | Rich countries still need economic growth to improve people's lives. | Right ½ |
+| t01 | Fighting climate change should come before economic growth. | progressive (social); environment first (environment) |
+| t02 | Climate targets should be delayed if they push up energy bills. | conservative (social); growth first (environment) |
+| t03 | My country should build new nuclear power stations. | conservative (social, ½) |
+| t04 | From 2035, only zero-emission new cars should be sold in the EU. | progressive (social); environment first (environment) |
+| t05 | Farmers should not be forced to shrink their herds to meet nature or climate targets. | conservative (social); libertarian (authority, ½); growth first (environment) |
+| x14 | Flying should be taxed much more heavily, even if holidays abroad become a luxury. | progressive (social, ½); environment first (environment) |
+| y08 | Rich countries should deliberately shrink their production and consumption to protect the planet. | left (economic, ½); environment first (environment) |
+| z05 | Economic growth should be the government's top priority. | right (economic, ½); growth first (environment) |
+| g02 | Nature should be protected even when that blocks new homes or roads. | environment first (environment) |
+| g03 | Wind and solar farms are worth having even when they change the landscape. | environment first (environment) |
+| g04 | The dangers of climate change are exaggerated. | growth first (environment) |
+| g05 | Environmental rules have made it too hard to build things in my country. | right (economic, ½); growth first (environment) |
+| g06 | A carbon tax that makes petrol and heating noticeably dearer is justified. | environment first (environment) |
+| g07 | Cheap energy matters more than cutting emissions, whatever the source. | growth first (environment) |
 
 ## Foreign policy and security
 
-| # | Statement | Agreeing = |
+| # | Statement | Agreeing counts as |
 |---|---|---|
-| 100 | Europe should keep arming Ukraine for as long as it takes. | Hawk |
-| 101 | Ukraine should accept losing some territory in exchange for a lasting peace. | Dove |
-| 102 | European soldiers should be stationed in Ukraine to help guarantee a peace deal. | Hawk |
-| 103 | NATO's expansion eastwards helped provoke Russia's invasion of Ukraine. | Dove |
-| 104 | Taiwan's future is a matter for China and Taiwan, not for Europe. | Dove |
-| 105 | Europe should stay closely allied with the United States, whoever is president. | Hawk ½ |
-| 106 | My country should spend at least 3.5% of its GDP on defence, even if that means less money for other things. | Hawk |
-| 107 | Europe needs its own nuclear deterrent, independent of the United States. | Hawk |
-| 108 | Diplomacy and trade do more to keep the peace than military strength. | Dove |
-| 109 | My country should only send soldiers to fight abroad if it or an ally has been attacked. | Dove |
-| 110 | The 1991 Gulf War to drive Iraq out of Kuwait was justified. | Hawk |
-| 111 | NATO was right to bomb Serbia over Kosovo in 1999. | Hawk |
-| 112 | The 2003 invasion of Iraq was a mistake. | Dove |
-| 113 | My country should send troops to defend any NATO ally attacked by Russia, even a small Baltic state. | Hawk |
-| 114 | Sanctions on Russia should be lifted once there is a ceasefire in Ukraine. | Dove |
-| 115 | Ukraine should be allowed to strike military targets deep inside Russia with Western weapons. | Hawk |
-| 116 | Ukraine should become a member of NATO. | Hawk |
-| 117 | European leaders should negotiate directly with Putin to end the war. | Dove |
-| 118 | China is more a threat to Europe than a partner. | Hawk |
-| 119 | Chinese companies should be kept out of critical infrastructure such as telecom networks and ports. | Hawk ½ |
-| 120 | Iran must be stopped from getting nuclear weapons, by military force if necessary. | Hawk |
-| 121 | The strikes by the US and Israel on Iran's nuclear sites in June 2025 were justified. | Hawk |
-| 122 | Rich countries should spend at least 0.7% of their national income on development aid. | Left ½ |
-| 123 | Western countries should not interfere in other countries' internal affairs, even to protect human rights. | Dove |
-| 124 | The West should be willing to use military force to stop genocide or mass atrocities abroad. | Hawk |
-| 125 | The 2011 military intervention in Libya was a mistake. | Dove |
-| 126 | The UN Security Council is so deadlocked that it has become irrelevant. | compare only |
-| 127 | Europe should buy weapons from European companies rather than American ones, even if they cost more. | compare only |
-| 128 | Countries should only sell weapons to democracies. | Dove |
-| 129 | Withdrawing from Afghanistan in 2021 was the right decision, even though the Taliban took over. | Dove |
-| 130 | Europe should accept that Russia has a sphere of influence in its neighbourhood. | Dove |
-| 131 | Nuclear weapons should eventually be abolished worldwide. | Dove |
+| p01 | Europe should keep arming Ukraine for as long as it takes. | hawk (foreign policy) |
+| p02 | Ukraine should accept losing some territory in exchange for a lasting peace. | dove (foreign policy) |
+| p04 | NATO's expansion eastwards helped provoke Russia's invasion of Ukraine. | dove (foreign policy) |
+| p10 | My country should spend at least 3.5% of its GDP on defence, even if that means less money for other things. | hawk (foreign policy) |
+| p12 | Diplomacy and trade do more to keep the peace than military strength. | dove (foreign policy) |
+| p16 | The 2003 invasion of Iraq was a mistake. | dove (foreign policy) |
+| p19 | Ukraine should be allowed to strike military targets deep inside Russia with Western weapons. | hawk (foreign policy) |
+| p24 | Iran must be stopped from getting nuclear weapons, by military force if necessary. | hawk (foreign policy) |
+| p27 | Western countries should not interfere in other countries' internal affairs, even to protect human rights. | dove (foreign policy) |
+| p28 | The West should be willing to use military force to stop genocide or mass atrocities abroad. | hawk (foreign policy) |
+| y09 | NATO should be dissolved. | dove (foreign policy) |
+| z07 | NATO should be strengthened and given a bigger role in the world. | hawk (foreign policy) |
 
 ## Israel and Palestine
 
-| # | Statement | Agreeing = |
+| # | Statement | Agreeing counts as |
 |---|---|---|
-| 132 | Israel's war in Gaza after the attack of 7 October 2023 was justified. | Conservative ½, Hawk |
-| 133 | European countries should recognise a Palestinian state. | Progressive ½ |
-| 134 | European countries should stop selling weapons to Israel. | Progressive ½, Dove |
-| 135 | Israel has the right to exist as a Jewish state. | Conservative ½ |
-| 136 | Palestinians have the right to their own independent state. | Progressive ½ |
-| 137 | Israel's occupation of the West Bank is the biggest obstacle to peace. | Progressive ½ |
-| 138 | Hamas's attack of 7 October 2023 is the main reason for the war in Gaza. | Conservative ½ |
-| 139 | What Israel has done in Gaza amounts to genocide. | Progressive ½ |
-| 140 | Israeli settlements in the West Bank should be dismantled. | Progressive ½ |
-| 141 | European countries should arrest Benjamin Netanyahu if he visits, as the International Criminal Court's warrant requires. | Progressive ½ |
-| 142 | The EU should suspend its trade agreement with Israel because of the war in Gaza. | Progressive ½ |
-| 143 | Pro-Palestinian protests in Europe have too often crossed the line into antisemitism. | Conservative ½ |
-| 144 | Israel is right to respond with overwhelming force when it is attacked. | Conservative ½, Hawk |
-| 145 | Jerusalem should be the undivided capital of Israel. | Conservative ½ |
-| 146 | Europe should keep funding UNRWA, the UN agency for Palestinian refugees. | Progressive ½ |
+| p07 | European countries should stop selling weapons to Israel. | progressive (social, ½); dove (foreign policy) |
+| i01 | Israel has the right to exist as a Jewish state. | conservative (social, ½) |
+| i02 | Palestinians have the right to their own independent state. | progressive (social, ½) |
+| i04 | Hamas's attack of 7 October 2023 is the main reason for the war in Gaza. | conservative (social, ½) |
+| i05 | What Israel has done in Gaza amounts to genocide. | progressive (social, ½) |
+| i06 | Israeli settlements in the West Bank should be dismantled. | progressive (social, ½) |
+| i09 | Pro-Palestinian protests in Europe have too often crossed the line into antisemitism. | conservative (social, ½) |
 
 ## Europe
 
-| # | Statement | Agreeing = |
+| # | Statement | Agreeing counts as |
 |---|---|---|
-| 147 | Too many decisions are taken in Brussels; more power should return to national governments. | Conservative ½ |
-| 148 | Richer EU countries should permanently transfer money to poorer ones. | Left |
-| 149 | The EU should build a joint European army. | Progressive ½ |
-| 150 | The EU should admit new members such as Ukraine and the Western Balkan countries in the coming years. | Progressive ½ |
-| 151 | Countries should be able to opt out of EU rules they disagree with, even if that means less influence. | Conservative ½ |
-| 152 | National vetoes in EU foreign policy should be replaced by majority voting. | Progressive ½ |
-| 153 | Brexit was the right decision for the United Kingdom. | Conservative |
+| u01 | Too many decisions are taken in Brussels; more power should return to national governments. | conservative (social, ½); Eurosceptic (EU) |
+| u02 | Richer EU countries should permanently transfer money to poorer ones. | left (economic); pro-EU (EU) |
+| u03 | The EU should build a joint European army. | progressive (social, ½); pro-EU (EU) |
+| u05 | Countries should be able to opt out of EU rules they disagree with, even if that means less influence. | conservative (social, ½); Eurosceptic (EU) |
+| u06 | National vetoes in EU foreign policy should be replaced by majority voting. | progressive (social, ½); pro-EU (EU) |
+| u07 | Brexit was the right decision for the United Kingdom. | conservative (social); Eurosceptic (EU) |
+| x04 | The EU should become a federal state: a United States of Europe. | progressive (social); pro-EU (EU) |
+| y12 | The EU mainly serves big business rather than ordinary people. | left (economic, ½); Eurosceptic (EU, ½) |
+| w01 | My country is better off inside the EU than it would be outside it. | pro-EU (EU) |
+| w02 | My country should leave the European Union. | Eurosceptic (EU) |
+| w04 | Where EU law and national law clash, EU law should win. | pro-EU (EU) |
+| w05 | The EU should go back to being mainly a free-trade area. | Eurosceptic (EU) |
+| w06 | The United Kingdom should rejoin the EU. | pro-EU (EU) |
+| w07 | European integration has gone far enough; it should go no further. | Eurosceptic (EU) |
+| w08 | Small countries are safer inside strong EU institutions than on their own. | pro-EU (EU) |
+| w09 | I feel European first and attached to my own country second. | pro-EU (EU); globalist (nation) |
+| w10 | The EU should cut funding to member states that break democratic rules. | pro-EU (EU) |
+| w14 | Leaving the EU would make my country richer in the long run. | Eurosceptic (EU) |
 
 ## Democracy and institutions
 
-| # | Statement | Agreeing = |
+| # | Statement | Agreeing counts as |
 |---|---|---|
-| 154 | Important national decisions should be settled by binding referendums. | compare only |
-| 155 | My country should leave the European Convention on Human Rights if that is needed to control migration. | Conservative |
-| 156 | Some decisions, such as setting interest rates, are better left to independent experts than to elected politicians. | compare only |
-| 157 | Monarchies are worth keeping, in countries that have one. | Conservative |
-| 158 | The voting age should be lowered to 16. | Progressive |
+| d01 | Important national decisions should be settled by binding referendums. | anti-establishment (establishment) |
+| d02 | My country should leave the European Convention on Human Rights if that is needed to control migration. | conservative (social); authoritarian (authority); nationalist (nation, ½) |
+| d03 | Some decisions, such as setting interest rates, are better left to independent experts than to elected politicians. | trusts establishment (establishment) |
+| d06 | Politicians and the media are out of touch with ordinary people. | anti-establishment (establishment) |
+| d07 | The political system in my country is rigged in favour of an elite. | anti-establishment (establishment) |
+| d08 | Most established news media can be trusted to report honestly. | trusts establishment (establishment) |
+| d09 | On matters of public policy, scientists and experts deserve more trust than ordinary opinion. | trusts establishment (establishment) |
+| d10 | A strong leader who breaks the rules would do more good than a parliament that argues endlessly. | authoritarian (authority); anti-establishment (establishment) |
+| d11 | Courts should be able to overrule elected governments that break the constitution. | trusts establishment (establishment) |
+| d12 | The established parties have, on the whole, run my country well. | trusts establishment (establishment) |

@@ -97,7 +97,7 @@ with sync_playwright() as pw:
     print(json.dumps({k: v for k, v in r.items() if k not in ("bad", "badText")}, ensure_ascii=False))
     check(r["roundTrip"], "300 random codes decode back to the same name, label and answers (also inside a sentence)")
     check(r["allNull"] and r["allFour"], "all-skipped and all-strongly-agree edge cases survive")
-    check(r["sampleLen"] <= 130, f"a code for 'Teun' is short ({r['sampleLen']} characters)")
+    check(r["sampleLen"] <= 100, f"a code for 'Teun' is short ({r['sampleLen']} characters)")
     check(r["old"] == "old", "old-version code is rejected as 'old'")
     check(r["newer"] in ("newer", "broken"), "unknown future version is rejected")
     check(r["cut"] == "broken" and r["typo"] == "broken" and r["cutName"] == "broken", "cut-off and mistyped codes are rejected")
@@ -171,7 +171,7 @@ with sync_playwright() as pw:
         page.check("#consent")
         page.click("#send-btn")
         page.wait_for_timeout(300)
-        check(len(posts) >= 1 and posts[-1].get("entry.2") == ["add"] and posts[-1]["entry.1"][0].startswith("C6"), f"[{label}] result is posted to the form with kind=add")
+        check(len(posts) >= 1 and posts[-1].get("entry.2") == ["add"] and posts[-1]["entry.1"][0].startswith("C7"), f"[{label}] result is posted to the form with kind=add")
         check("Sent on" in page.inner_text("#send-status"), f"[{label}] confirmation shown")
 
         # Group views
