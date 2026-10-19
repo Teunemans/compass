@@ -10,7 +10,7 @@ window.COMPASS_CONFIG = {
 
   // Published CSV of the "public" tab of the response sheet (codes only, see README.md "Live results").
   // Leave empty to use only results.js.
-  liveCsv: "",
+  liveCsv: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTwU4rmnTuaWy_A_iZJ7Jky69V844_xbh-wocBokxMaFYRNz0kuuLUjDUhno0jmXXdI61TOe2vvWOc6/pub?gid=49340303&single=true&output=csv",
 
   // Google Form "Compass results" that receives results; responses go to the Sheet
   // "Compass results (responses)" in Teun's Drive. Leave action empty to switch sending off;
