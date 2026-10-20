@@ -3,6 +3,10 @@ window.COMPASS_CONFIG = {
   owner: "Teun",
   ownerX: "Teunemansvb",          // X handle for removal requests and questions (without @)
 
+  // People whose name contains one of these words are hidden from the group (ignoring capitals, accents,
+  // spaces, punctuation and look-alike characters such as 0 for o, 4 for a, 1 for i, 3 for e, 7 for t).
+  blockedNames: ["anton"],
+
   // Labels on the balls, by name, replacing the label people chose themselves (max 3 letters/digits).
   labelOverrides: {
     "Riley": "Ry"

@@ -527,6 +527,12 @@ function assignColours(list) {
   }
 }
 
+// Names that contain a blocked word (config.js, blockedNames) are left out of the group. The name is first
+// flattened: lower case, no accents, look-alike characters swapped for letters, everything but letters removed.
+const LOOKALIKE = { "0": "o", "1": "i", "3": "e", "4": "a", "5": "s", "7": "t", "@": "a", "$": "s", "!": "i", "|": "i" };
+const flatName = n => String(n).normalize("NFKD").toLowerCase().replace(/[0134577@$!|]/g, ch => LOOKALIKE[ch] || ch).replace(/[^a-z]/g, "");
+const isBlocked = name => (CFG.blockedNames || []).some(w => flatName(name).includes(flatName(w)));
+
 let groupWarnings = [];
 function people() {
   const list = [], byCode = new Set();
@@ -536,7 +542,7 @@ function people() {
     if (!String(line).trim()) return;
     const r = decode(line);
     if (r.error) { groupWarnings.push({ n: n + 1, error: r.error }); return; }
-    if (byCode.has(r.code)) return;
+    if (isBlocked(r.name) || byCode.has(r.code)) return;
     byCode.add(r.code);
     // Teun can override a person's label in config.js (labelOverrides), without changing their code.
     const tag = (CFG.labelOverrides || {})[r.name] ?? r.tag;
@@ -1056,5 +1062,5 @@ setInterval(() => { if (document.visibilityState === "visible") refreshGroup(); 
 if (location.hash === "#remove") openRemove();
 
 // Small hook for the automated tests (tests/run.py); harmless for visitors.
-window.Compass = { encode, decode, agreement, axisScore, labelCandidates, assignLabels, N, ANS_LEN };
+window.Compass = { isBlocked, encode, decode, agreement, axisScore, labelCandidates, assignLabels, N, ANS_LEN };
 })();
