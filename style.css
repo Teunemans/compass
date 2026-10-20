@@ -136,3 +136,17 @@ footer a{color:var(--mid)}
 
 .goto{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--mid)}
 .goto input{width:64px;padding:5px 8px;font-size:13px}
+
+/* Heatmap of everyone on every axis */
+.heat-wrap{overflow:auto;max-height:560px;border:1px solid var(--hair);border-radius:8px}
+table.heat{border-collapse:separate;border-spacing:0;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+.heat th,.heat td{padding:6px 6px;text-align:center;border-bottom:1px solid var(--hair);white-space:nowrap}
+.heat thead th{position:sticky;top:0;z-index:2;background:var(--card);cursor:pointer;vertical-align:bottom;min-width:78px;white-space:normal}
+.heat thead th b{display:block;font-size:13px;color:var(--ink)}
+.heat thead th small{display:block;font-weight:400;font-size:11px;color:var(--mid)}
+.heat th.who{position:sticky;left:0;z-index:1;background:var(--card);text-align:left;font-weight:500;min-width:118px}
+.heat thead th.who{z-index:3;cursor:default}
+.heat th.who .ball{width:22px;height:22px;font-size:9px;margin-right:8px;vertical-align:middle}
+.heat tbody tr{cursor:pointer}
+.heat tbody tr:hover th.who,.heat tbody tr.sel th.who{background:var(--soft)}
+.heat tbody tr:last-child td,.heat tbody tr:last-child th{border-bottom:0}

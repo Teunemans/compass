@@ -629,39 +629,55 @@ function renderCompass(list) {
      .forEach(o => svg.appendChild(svgBall(o.p, o.cx, o.cy, r)));
 }
 
-// pts: [{p, h}] with h from −100 to +100. Balls that would overlap go into lanes above and below.
-function renderBar(svg, pts, leftLabel, rightLabel) {
-  const r = ballR(pts.length), X = v => 40 + (v + 100) / 200 * 340, GAP = r * 2 + 3, LANE = r * 2 + 4;
-  pts.sort((a, b) => a.h - b.h);
-  const placed = [];
-  for (const o of pts) {
-    o.cx = X(o.h);
-    for (const L of [0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5]) if (!placed.some(q => q.lane === L && Math.abs(q.cx - o.cx) < GAP)) { o.lane = L; break; }
-    if (o.lane === undefined) o.lane = 0;
-    placed.push(o);
-  }
-  const maxL = Math.max(0, ...placed.map(o => Math.abs(o.lane)));
-  const base = 18 + maxL * LANE + 12, H = base + maxL * LANE + 12 + 30;
-  svg.textContent = ""; svg.setAttribute("viewBox", "0 0 420 " + H);
-  svg.appendChild(svgEl("line", { class: "axis", x1: 40, y1: base, x2: 380, y2: base }));
-  svg.appendChild(svgEl("line", { class: "grid", x1: 210, y1: base - maxL * LANE - 14, x2: 210, y2: base + maxL * LANE + 14 }));
-  svg.appendChild(svgEl("text", { class: "axlab", x: 40, y: H - 8 }, leftLabel));
-  svg.appendChild(svgEl("text", { class: "axlab", x: 380, y: H - 8, "text-anchor": "end" }, rightLabel));
-  [...placed].sort((a, b) => (a.p.you || isFocus(a.p)) - (b.p.you || isFocus(b.p))).forEach(o => svg.appendChild(svgBall(o.p, o.cx, base + o.lane * LANE, r)));
+// ---------- Heatmap: everyone on every axis ----------
+// One row per person, one column per axis. Blue = the low end of the axis, orange = the high end;
+// the stronger the colour, the further from the centre. Click a column title to sort by it.
+let heatSort = { k: "x", dir: 1 };
+function heatCols() {
+  return [{ k: "x", name: "Economic", lo: "left", hi: "right" }, { k: "y", name: V().name, lo: V().low.toLowerCase(), hi: V().high.toLowerCase() },
+    ...BARS.map(b => ({ k: b.k, name: b.name, lo: b.low.toLowerCase(), hi: b.high.toLowerCase() }))];
 }
-function renderHawk(list) {
-  BARS.forEach(b => {
-    let box = $(b.id);
-    if (!box) {                                                // build the block the first time it is needed
-      box = document.createElement("div"); box.className = "sub"; box.id = b.id; box.hidden = true;
-      const h3 = document.createElement("h3"); h3.textContent = b.title;
-      const svg = svgEl("svg", { class: "chart", id: b.id + "-plot", viewBox: "0 0 420 100", role: "img", "aria-label": "Everyone placed from " + b.low.toLowerCase() + " to " + b.high.toLowerCase() });
-      box.append(h3, svg); $("bars").appendChild(box);
-    }
-    const pts = list.filter(p => p[b.k] !== null).map(p => ({ p, h: p[b.k] }));
-    box.hidden = view !== "2d" || !pts.length;
-    if (!box.hidden) renderBar($(b.id + "-plot"), pts, b.low, b.high);
+function heatColour(v) {
+  if (v === null) return "";
+  const a = (0.06 + 0.62 * Math.min(1, Math.abs(v) / 100)).toFixed(2);
+  return "background:" + (v < 0 ? "rgba(43,108,176," : "rgba(214,106,32,") + a + ")";
+}
+function renderHeat(list) {
+  const box = $("heat"), wrap = $("heat-wrap"), cols = heatCols();
+  box.hidden = !list.length;
+  if (box.hidden) return;
+  if (!cols.some(c => c.k === heatSort.k)) heatSort = { k: "x", dir: 1 };
+  const rows = [...list].sort((a, b) => {
+    const x = a[heatSort.k], y = b[heatSort.k];
+    return (x === null) - (y === null) || (x - y) * heatSort.dir || a.name.localeCompare(b.name);
   });
+  const t = document.createElement("table"); t.className = "heat";
+  const head = t.createTHead().insertRow(); head.insertCell().outerHTML = "<th class='who'></th>";
+  cols.forEach(c => {
+    const th = document.createElement("th"); th.tabIndex = 0; th.setAttribute("role", "button");
+    const on = heatSort.k === c.k;
+    th.innerHTML = "<b></b><small></small>";
+    th.firstChild.textContent = c.name + (on ? (heatSort.dir > 0 ? " ▲" : " ▼") : "");
+    th.lastChild.textContent = c.lo + " · " + c.hi;
+    th.title = "Sort by " + c.name.toLowerCase() + " (" + c.lo + " to " + c.hi + ")";
+    const go = () => { heatSort = { k: c.k, dir: on ? -heatSort.dir : 1 }; renderHeat(lastList); };
+    th.onclick = go; th.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } };
+    head.appendChild(th);
+  });
+  const body = t.createTBody();
+  rows.forEach(p => {
+    const tr = body.insertRow(); if (isFocus(p)) tr.className = "sel";
+    const who = document.createElement("th"); who.className = "who"; who.scope = "row";
+    const nm = document.createElement("span"); nm.textContent = p.name + (p.you ? " (you)" : "");
+    who.append(htmlBall(p), nm); tr.appendChild(who);
+    tr.onclick = () => setFocus(p.key);
+    cols.forEach(c => {
+      const td = tr.insertCell(); const v = p[c.k];
+      td.textContent = fmt(v); td.style.cssText = heatColour(v);
+      td.title = p.name + " · " + c.name.toLowerCase() + " " + fmt(v) + (v === null ? "" : " (" + word(v, c.lo, c.hi) + ")");
+    });
+  });
+  wrap.textContent = ""; wrap.appendChild(t);
 }
 
 // ---------- 3D: economic × social (or authority) × hawk–dove ----------
@@ -965,7 +981,7 @@ function renderAll() {
   $("rotate-hint").hidden = !three;
   $("view-2d").classList.toggle("on", !three); $("view-3d").classList.toggle("on", three);
   if (three) render3d(list); else renderCompass(list);
-  renderHawk(list); renderFocus(list); renderPeople(list); renderCompare(list); renderClosestYou(list); renderOwnerCheck(list);
+  renderHeat(list); renderFocus(list); renderPeople(list); renderCompare(list); renderClosestYou(list); renderOwnerCheck(list);
 }
 
 if (st.seen && st.name) showResult(); else { show("intro"); renderAll(); }
