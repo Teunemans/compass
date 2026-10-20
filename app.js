@@ -634,18 +634,57 @@ function renderCompass(list) {
 // the stronger the colour, the further from the centre. Click a column title to sort by it.
 let heatSort = { k: "x", dir: 1 };
 function heatCols() {
-  return [{ k: "x", name: "Economic", lo: "left", hi: "right" }, { k: "y", name: V().name, lo: V().low.toLowerCase(), hi: V().high.toLowerCase() },
-    ...BARS.map(b => ({ k: b.k, name: b.name, lo: b.low.toLowerCase(), hi: b.high.toLowerCase() }))];
+  return [{ k: "x", name: "Economic", lo: "left", hi: "right", LO: "Left", HI: "Right" }, { k: "y", name: V().name, lo: V().low.toLowerCase(), hi: V().high.toLowerCase(), LO: V().low, HI: V().high },
+    ...BARS.map(b => ({ k: b.k, name: b.name, lo: b.low.toLowerCase(), hi: b.high.toLowerCase(), LO: b.low, HI: b.high }))];
 }
 function heatColour(v) {
   if (v === null) return "";
   const a = (0.06 + 0.62 * Math.min(1, Math.abs(v) / 100)).toFixed(2);
   return "background:" + (v < 0 ? "rgba(43,108,176," : "rgba(214,106,32,") + a + ")";
 }
+// ---------- Dot strips: one row per axis, everyone as a small dot on the same −100…+100 scale ----------
+let heatMode = "dots";
+function renderDots(list, wrap) {
+  const cols = heatCols(), R = 7, STEP = 15, X0 = 118, X1 = 618, X = v => X0 + (v + 100) / 200 * (X1 - X0);
+  const svg = svgEl("svg", { class: "chart dots", role: "img", "aria-label": "Everyone placed on every axis" });
+  let y = 8;
+  cols.forEach(c => {
+    const pts = list.filter(p => p[c.k] !== null).sort((a, b) => a[c.k] - b[c.k]).map(p => ({ p, v: p[c.k], cx: X(p[c.k]) }));
+    const placed = [];
+    pts.forEach(o => {                                           // dots that would touch go into lanes above and below
+      for (const L of [0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5]) if (!placed.some(q => q.lane === L && Math.abs(q.cx - o.cx) < STEP)) { o.lane = L; break; }
+      if (o.lane === undefined) o.lane = 0;
+      placed.push(o);
+    });
+    const ml = Math.max(0, ...placed.map(o => Math.abs(o.lane))), base = y + 20 + ml * STEP;
+    svg.appendChild(svgEl("text", { class: "dtitle", x: 0, y: base + 4 }, c.name));
+    svg.appendChild(svgEl("line", { class: "dline", x1: X0, y1: base, x2: X1, y2: base }));
+    svg.appendChild(svgEl("line", { class: "dmid", x1: X(0), y1: base - ml * STEP - 10, x2: X(0), y2: base + ml * STEP + 10 }));
+    placed.forEach(o => {
+      const dot = svgEl("circle", { class: "dot" + (o.p.you ? " you" : "") + (isFocus(o.p) ? " focus" : ""), cx: o.cx, cy: base + o.lane * STEP, r: o.p.you ? R + 2 : R });
+      dot.appendChild(svgEl("title", {}, o.p.name + (o.p.you ? " (you)" : "") + " · " + fmt(o.v) + " (" + word(o.v, c.lo, c.hi) + ")"));
+      dot.onclick = () => setFocus(o.p.key);
+      svg.appendChild(dot);
+    });
+    // name the two outermost people, above the whole stack, pointing away from the middle
+    const first = placed[0], last = placed[placed.length - 1], top = base - ml * STEP - R - 5;
+    if (first && !first.p.you) svg.appendChild(svgEl("text", { class: "dname", x: first.cx, y: top, "text-anchor": first.cx > X0 + 70 ? "end" : "start" }, first.p.name));
+    if (last && last !== first && !last.p.you) svg.appendChild(svgEl("text", { class: "dname", x: last.cx, y: top, "text-anchor": last.cx < X1 - 70 ? "start" : "end" }, last.p.name));
+    const ly = base + ml * STEP + 22;
+    svg.appendChild(svgEl("text", { class: "dend", x: X0, y: ly }, c.LO));
+    svg.appendChild(svgEl("text", { class: "dend", x: X1, y: ly, "text-anchor": "end" }, c.HI));
+    y = ly + 14;
+  });
+  svg.setAttribute("viewBox", "0 0 640 " + y);
+  wrap.textContent = ""; wrap.appendChild(svg);
+}
 function renderHeat(list) {
   const box = $("heat"), wrap = $("heat-wrap"), cols = heatCols();
   box.hidden = !list.length;
   if (box.hidden) return;
+  document.querySelectorAll("[data-heat]").forEach(b => b.classList.toggle("on", b.dataset.heat === heatMode));
+  wrap.className = heatMode === "dots" ? "dots-wrap" : "heat-wrap";
+  if (heatMode === "dots") return renderDots(list, wrap);
   if (!cols.some(c => c.k === heatSort.k)) heatSort = { k: "x", dir: 1 };
   const rows = [...list].sort((a, b) => {
     const x = a[heatSort.k], y = b[heatSort.k];
@@ -966,6 +1005,7 @@ $("theme").onclick = () => {
 };
 syncThemeButton();
 
+document.querySelectorAll("[data-heat]").forEach(b => { b.onclick = () => { heatMode = b.dataset.heat; renderHeat(lastList); }; });
 function setVert(v) {
   vert = v; try { localStorage.setItem("compass-v1-vert", v); } catch (e) {}
   if (!$("result").hidden) fillScores();

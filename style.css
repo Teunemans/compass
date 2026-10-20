@@ -150,3 +150,18 @@ table.heat{border-collapse:separate;border-spacing:0;width:100%;font-size:13px;f
 .heat tbody tr{cursor:pointer}
 .heat tbody tr:hover th.who,.heat tbody tr.sel th.who{background:var(--soft)}
 .heat tbody tr:last-child td,.heat tbody tr:last-child th{border-bottom:0}
+
+/* Dot strips */
+:root{--dot:#b9bec7}
+:root[data-theme="dark"]{--dot:#5b616c}
+.dots-wrap{min-width:0}
+svg.dots{width:100%;height:auto;display:block}
+.dots .dtitle{font-size:13px;font-weight:700;fill:var(--ink)}
+.dots .dline{stroke:var(--hair);stroke-width:2.5;stroke-linecap:round}
+.dots .dmid{stroke:var(--hair);stroke-width:1.5}
+.dots .dot{fill:var(--dot);stroke:var(--card);stroke-width:1.5;cursor:pointer}
+.dots .dot:hover{stroke:var(--ink)}
+.dots .dot.you{fill:#c62828;stroke:var(--ink);stroke-width:2}
+.dots .dot.focus{fill:var(--accent);stroke:var(--ink);stroke-width:2}
+.dots .dname{font-size:10.5px;fill:var(--mid);pointer-events:none}
+.dots .dend{font-size:11px;fill:var(--mid)}
