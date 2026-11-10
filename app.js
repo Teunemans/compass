@@ -571,7 +571,8 @@ function people() {
 // ============================================================================================
 const SVGNS = "http://www.w3.org/2000/svg";
 function svgEl(tag, attrs, text) { const n = document.createElementNS(SVGNS, tag); for (const k in attrs) n.setAttribute(k, attrs[k]); if (text != null) n.textContent = text; return n; }
-const ballR = n => n > 80 ? 8 : n > 40 ? 10 : 12;
+// Ball radius on the compass: a bit smaller as the group grows, so 80+ people still fit side by side.
+const ballR = n => n > 50 ? 8 : n > 20 ? 9 : 10;
 let focusKey = null;
 const isFocus = p => focusKey !== null && p.key === focusKey;
 const describe = p => p.name + (p.local ? " (only you see this)" : "") + ": economic " + fmt(p.x) + ", " + V().name.toLowerCase() + " " + fmt(p.y) + ", hawk–dove " + fmt(p.h);
@@ -590,26 +591,31 @@ function svgBall(p, cx, cy, r) {
   if (p.you) g.appendChild(svgEl("circle", { class: "you-ring", cx, cy, r: r + 3 }));
   if (isFocus(p)) g.appendChild(svgEl("circle", { class: "focus-ring", cx, cy, r: r + (p.you ? 6 : 3.5) }));
   g.appendChild(svgEl("circle", { class: "dot", cx, cy, r, fill: p.colour }));
-  if (r >= 10) g.appendChild(svgEl("text", { x: cx, y: cy + 3.5, "text-anchor": "middle", style: "font-size:" + (p.label.length > 2 ? 9 : 10) + "px" }, p.label));
+  // The label shrinks with the ball (3-letter labels one pixel smaller); below 8 there's no room for it.
+  const fs = Math.min(10, r) - (p.label.length > 2 ? 1 : 0);
+  if (r >= 8) g.appendChild(svgEl("text", { x: cx, y: cy + fs * 0.35, "text-anchor": "middle", style: "font-size:" + fs + "px" }, p.label));
   g.addEventListener("click", () => setFocus(p.key));
   g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setFocus(p.key); } });
   return g;
 }
 // Nudge overlapping balls apart a little; a thin line shows where a moved ball really belongs.
 function relax(pts, r) {
-  const min = r * 2 + 1;
-  for (let it = 0; it < 60; it++) {
-    let moved = false;
+  const min = r * 2 + 1, lo = 50 + r * 0.5, hi = 370 - r * 0.5;
+  // First rounds: push apart while pulling each ball back towards its true spot. Last rounds: only push
+  // apart, so that even a crowded middle with 80+ people ends with no ball covering another.
+  for (let it = 0; it < 400; it++) {
+    let worst = 0;
     for (let a = 0; a < pts.length; a++) for (let b = a + 1; b < pts.length; b++) {
       const A = pts[a], B = pts[b];
       let dx = B.cx - A.cx, dy = B.cy - A.cy, d = Math.hypot(dx, dy);
       if (d >= min) continue;
       if (d < 0.01) { const ang = (a * 2.4 + b) % (2 * Math.PI); dx = Math.cos(ang); dy = Math.sin(ang); d = 1; }
-      const push = (min - d) / 2;
-      A.cx -= dx / d * push; A.cy -= dy / d * push; B.cx += dx / d * push; B.cy += dy / d * push; moved = true;
+      const push = (min - d) / 2; worst = Math.max(worst, min - d);
+      A.cx -= dx / d * push; A.cy -= dy / d * push; B.cx += dx / d * push; B.cy += dy / d * push;
     }
-    for (const o of pts) { o.cx += (o.tx - o.cx) * 0.08; o.cy += (o.ty - o.cy) * 0.08; }
-    if (!moved) break;
+    if (it < 200) for (const o of pts) { o.cx += (o.tx - o.cx) * 0.05; o.cy += (o.ty - o.cy) * 0.05; }
+    for (const o of pts) { o.cx = Math.min(hi, Math.max(lo, o.cx)); o.cy = Math.min(hi, Math.max(lo, o.cy)); }   // stay in the square
+    if (worst < 0.5 && it >= 10) break;
   }
 }
 
@@ -662,8 +668,8 @@ function renderDots(list, wrap) {
     const pts = list.filter(p => p[c.k] !== null).sort((a, b) => a[c.k] - b[c.k]).map(p => ({ p, v: p[c.k], cx: X(p[c.k]) }));
     const placed = [];
     pts.forEach(o => {                                           // dots that would touch go into lanes above and below
-      for (const L of [0, -1, 1, -2, 2, -3, 3, -4, 4, -5, 5]) if (!placed.some(q => q.lane === L && Math.abs(q.cx - o.cx) < STEP)) { o.lane = L; break; }
-      if (o.lane === undefined) o.lane = 0;
+      // as many lanes as needed (0, -1, 1, -2, 2, …), so a crowded middle never piles dots on top of each other
+      for (let j = 0; o.lane === undefined; j++) { const L = j % 2 ? -(j + 1) / 2 : j / 2; if (!placed.some(q => q.lane === L && Math.abs(q.cx - o.cx) < STEP)) o.lane = L; }
       placed.push(o);
     });
     const ml = Math.max(0, ...placed.map(o => Math.abs(o.lane))), base = y + 20 + ml * STEP;
