@@ -7,6 +7,11 @@ window.COMPASS_CONFIG = {
   // spaces, punctuation and look-alike characters such as 0 for o, 4 for a, 1 for i, 3 for e, 7 for t).
   blockedNames: ["anton"],
 
+  // When this list is not empty, only people whose name is exactly one of these are shown in the group
+  // (same flattening as blockedNames: capitals, accents, spaces and look-alikes don't matter). Everyone else
+  // stays in the sheet, just hidden. Empty the list to show everyone again.
+  onlyNames: ["Alixxa", "Sofia", "Teun"],
+
   // Labels on the balls, by name, replacing the label people chose themselves (max 3 letters/digits).
   labelOverrides: {
     "Riley": "Ry"

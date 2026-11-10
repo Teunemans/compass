@@ -532,6 +532,8 @@ function assignColours(list) {
 const LOOKALIKE = { "0": "o", "1": "i", "3": "e", "4": "a", "5": "s", "7": "t", "@": "a", "$": "s", "!": "i", "|": "i" };
 const flatName = n => String(n).normalize("NFKD").toLowerCase().replace(/[0134577@$!|]/g, ch => LOOKALIKE[ch] || ch).replace(/[^a-z]/g, "");
 const isBlocked = name => (CFG.blockedNames || []).some(w => flatName(name).includes(flatName(w)));
+// If config.js has an onlyNames list, everyone whose name isn't exactly on it is left out too.
+const isShown = name => !(CFG.onlyNames || []).length || CFG.onlyNames.some(w => flatName(w) === flatName(name));
 
 let groupWarnings = [];
 function people() {
@@ -542,7 +544,7 @@ function people() {
     if (!String(line).trim()) return;
     const r = decode(line);
     if (r.error) { groupWarnings.push({ n: n + 1, error: r.error }); return; }
-    if (isBlocked(r.name) || byCode.has(r.code)) return;
+    if (isBlocked(r.name) || !isShown(r.name) || byCode.has(r.code)) return;
     byCode.add(r.code);
     // Teun can override a person's label in config.js (labelOverrides), without changing their code.
     const tag = (CFG.labelOverrides || {})[r.name] ?? r.tag;
