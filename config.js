@@ -7,10 +7,26 @@ window.COMPASS_CONFIG = {
   // spaces, punctuation and look-alike characters such as 0 for o, 4 for a, 1 for i, 3 for e, 7 for t).
   blockedNames: ["anton"],
 
-  // When this list is not empty, only people whose name is exactly one of these are shown in the group
-  // (same flattening as blockedNames: capitals, accents, spaces and look-alikes don't matter). Everyone else
-  // stays in the sheet, just hidden. Empty the list to show everyone again.
-  onlyNames: ["Alixxa", "Sofia", "Teun"],
+  // Results hidden from the group, by a short fingerprint of their result code (the name is only a reminder).
+  // New results always show, also from someone who took the test before: a new result has a new code.
+  // To see someone again, delete their line.
+  hiddenResults: [
+    "50d273b6", // Strat
+    "fe5d4c87", // Molly Jane
+    "99fd47f2", // leslie
+    "65f3abb0", // Gregor
+    "7038f94d", // Casa
+    "39b91a2d", // Alexander
+    "ce80f680", // Nader
+    "f9707285", // Alixxa
+    "6c5eb7c4", // Zhen
+    "b83cc8dd", // Mikita
+    "367c1d47", // Holly
+    "0df77b38", // riley
+    "9f175612", // Nova
+    "7a7e016b", // TheKoopaGuy
+    "58d61519", // Euroscemo
+  ],
 
   // Labels on the balls, by name, replacing the label people chose themselves (max 3 letters/digits).
   labelOverrides: {

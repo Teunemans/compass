@@ -532,8 +532,10 @@ function assignColours(list) {
 const LOOKALIKE = { "0": "o", "1": "i", "3": "e", "4": "a", "5": "s", "7": "t", "@": "a", "$": "s", "!": "i", "|": "i" };
 const flatName = n => String(n).normalize("NFKD").toLowerCase().replace(/[0134577@$!|]/g, ch => LOOKALIKE[ch] || ch).replace(/[^a-z]/g, "");
 const isBlocked = name => (CFG.blockedNames || []).some(w => flatName(name).includes(flatName(w)));
-// If config.js has an onlyNames list, everyone whose name isn't exactly on it is left out too.
-const isShown = name => !(CFG.onlyNames || []).length || CFG.onlyNames.some(w => flatName(w) === flatName(name));
+// Results hidden by Teun (config.js, hiddenResults) are left out too. They are matched on a short
+// fingerprint (FNV-1a hash, 8 hex digits) of the whole result code, so a new result is never hidden.
+const fingerprint = code => { let h = 0x811c9dc5; for (const c of code) { h ^= c.charCodeAt(0); h = Math.imul(h, 0x01000193) >>> 0; } return h.toString(16).padStart(8, "0"); };
+const hiddenResults = new Set(CFG.hiddenResults || []);
 
 let groupWarnings = [];
 function people() {
@@ -544,7 +546,7 @@ function people() {
     if (!String(line).trim()) return;
     const r = decode(line);
     if (r.error) { groupWarnings.push({ n: n + 1, error: r.error }); return; }
-    if (isBlocked(r.name) || !isShown(r.name) || byCode.has(r.code)) return;
+    if (isBlocked(r.name) || hiddenResults.has(fingerprint(r.code)) || byCode.has(r.code)) return;
     byCode.add(r.code);
     // Teun can override a person's label in config.js (labelOverrides), without changing their code.
     const tag = (CFG.labelOverrides || {})[r.name] ?? r.tag;
